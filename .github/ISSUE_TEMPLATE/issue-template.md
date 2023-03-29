@@ -1,3 +1,11 @@
+---
+name: Issue template
+about: For feature or bug
+title: ''
+labels: ''
+assignees: ''
+---
+
 # 무엇을 위한 이슈인가요?
 
 _이슈 유형을 작성하세요._
