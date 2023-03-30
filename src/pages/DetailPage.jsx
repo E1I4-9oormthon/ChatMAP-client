@@ -24,6 +24,8 @@ export const DetailPage = () => {
     console.log('글쓴이', fetchedData.data.data.user.name)
     setWriter(fetchedData.data.data.user.name)
     setData(fetchedData.data.data)
+    console.log('정보', fetchedData)
+    // setApplyStatus()
   }
 
   const checkMe = async () => {
@@ -138,11 +140,15 @@ export const DetailPage = () => {
       })
       handleApply(data, 1)
       setApplyStatus(1)
+      handleApply(data, 1)
+      setApplyStatus(1)
     } else {
       Swal.fire({
         title: '동행이 거절되었어요',
         confirmButtonColor: '#FAA250',
       })
+      handleApply(data, 2)
+      setApplyStatus(2)
       handleApply(data, 2)
       setApplyStatus(2)
     }
