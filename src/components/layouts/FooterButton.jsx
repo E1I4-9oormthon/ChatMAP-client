@@ -1,14 +1,11 @@
 import styled, { css } from 'styled-components'
-import { useNavigate } from 'react-router'
 
-
-export const FooterButton = ({ children, text, color }) => {
-  const navigate = useNavigate()
+export const FooterButton = ({ children, text, color, handleClick }) => {
   return (
-    <ButtonWrap onClick={() => navigate('/')}>
+    <ButtonWrap onClick={handleClick}>
       <HomeButton>
         <ButtonIcon>{children}</ButtonIcon>
-        <ButtomText color={color}>{text}</ButtomText>
+        <ButtonText color={color}>{text}</ButtonText>
       </HomeButton>
     </ButtonWrap>
   )
@@ -30,7 +27,7 @@ const ButtonIcon = styled.div`
   height: 25px;
 `
 
-const ButtomText = styled.div`
+const ButtonText = styled.div`
   ${({ color }) => {
     return css`
       display: flex;
