@@ -17,6 +17,7 @@ export const DetailPage = () => {
   const commentRef = useRef()
   const [writer, setWriter] = useState()
   const [signedInUser, setSignedInUser] = useState()
+  const [applyStatus, setApplyStatus] = useState(0)
 
   const fetchDetailData = async () => {
     const fetchedData = await api.get(`/olles/${params.id}`)
@@ -96,13 +97,37 @@ export const DetailPage = () => {
             confirmButtonColor: '#FAA250',
           })
         })
+
         .catch((err) => {
+          const { response: errorResponse } = err
+          if (errorResponse.status) {
+            return window.alert('중복신청은 불가해요')
+          }
           console.log('동행신청 실패', err)
         })
     }
   }
 
-  const handleAccept = (result) => {
+  const handleApply = async (data, status) => {
+    const ApplyData = {
+      applyId: data.id,
+      olleId: data.olleId,
+      status: status,
+    }
+
+    console.log(ApplyData)
+
+    await api
+      .put('/olles/applies', ApplyData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log('실패!', err)
+      })
+  }
+
+  const handleAccept = (result, data) => {
     console.log(result)
     if (result) {
       Swal.fire({
@@ -111,11 +136,15 @@ export const DetailPage = () => {
         confirmButtonColor: '#FAA250',
         confirmButtonText: '채팅하기',
       })
+      handleApply(data, 1)
+      setApplyStatus(1)
     } else {
       Swal.fire({
         title: '동행이 거절되었어요',
         confirmButtonColor: '#FAA250',
       })
+      handleApply(data, 2)
+      setApplyStatus(2)
     }
   }
 
@@ -169,17 +198,23 @@ export const DetailPage = () => {
         {data?.applies.map((apply) => (
           <CommentBox>
             <CommentTextBox name={apply.user.name} content={apply.content} />
-            {writer === signedInUser ? (
-              <ButtonWrap>
-                <AcceptButton onClick={() => handleAccept(true)}>
-                  수락
-                </AcceptButton>
-                <RejectButton onClick={() => handleAccept(false)}>
-                  거절
-                </RejectButton>
-              </ButtonWrap>
+            {applyStatus === 0 ? (
+              writer === signedInUser ? (
+                <ButtonWrap>
+                  <AcceptButton onClick={() => handleAccept(true, apply)}>
+                    수락
+                  </AcceptButton>
+                  <RejectButton onClick={() => handleAccept(false, apply)}>
+                    거절
+                  </RejectButton>
+                </ButtonWrap>
+              ) : (
+                <CommentPostButton>대기중</CommentPostButton>
+              )
+            ) : applyStatus === 1 ? (
+              <ChatButton>채팅하기</ChatButton>
             ) : (
-              <CommentPostButton>대기중</CommentPostButton>
+              <ChatButton>싫다</ChatButton>
             )}
           </CommentBox>
         ))}
@@ -324,5 +359,17 @@ const RejectButton = styled.div`
   color: #858899;
   border-radius: 7px;
   border: 1px solid #858899;
+  cursor: pointer;
+`
+const ChatButton = styled.div`
+  margin-top: 1rem;
+  width: 100%;
+  height: 39px;
+  background-color: #faa250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 7px;
   cursor: pointer;
 `
