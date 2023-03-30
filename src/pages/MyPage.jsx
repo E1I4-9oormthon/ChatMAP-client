@@ -3,140 +3,29 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
 import TitleImg from '../assets/images/title_img.png'
+import api from '../apis/api'
 
 export const MyPage = () => {
   const tabTitles = ['내가 작성한 제안서', '나의 동행']
-
-  const intersectRef = useRef(null)
-  const rootRef = useRef(null)
-  const [isIntersect, setIsIntersect] = useState(false)
-
   const [postList, setPostList] = useState([])
-  const [postListPage, setPostListPage] = useState(0)
-  const [continueFetching, setContinueFetching] = useState(true)
   const [active, setActive] = useState(tabTitles[0])
   const navigate = useNavigate()
 
   const COUNT = 10
 
-  useEffect(() => {
-    if (!rootRef.current) return
-    const observer = new IntersectionObserver(handleIntersect, {
-      root: rootRef.current,
-      rootMargin: '0px',
-      threshold: 0.01,
-    })
-
-    if (intersectRef.current) observer.observe(intersectRef.current)
-
-    return () => observer.disconnect()
-  }, [intersectRef, rootRef.current])
-
-  const handleIntersect = (entries) => {
-    const target = entries[0]
-    if (target.isIntersecting) {
-      setIsIntersect(true)
-    } else {
-      setIsIntersect(false)
-    }
-  }
-  const mock1 = [
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 1,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 2,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 3,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 4,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 5,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 6,
-    },
-  ]
-
-  const mock2 = [
-    {
-      profileImage: TitleImg,
-      userName: 'aaaa',
-      favoriteGender: 'f',
-      visitDate: '2023.03.31',
-      postId: 7,
-    },
-    {
-      profileImage: TitleImg,
-      userName: 'aaaa',
-      favoriteGender: 'f',
-      visitDate: '2023.03.31',
-      postId: 8,
-    },
-    {
-      profileImage: TitleImg,
-      userName: 'aaaa',
-      favoriteGender: 'f',
-      visitDate: '2023.03.31',
-      postId: 9,
-    },
-    {
-      profileImage: TitleImg,
-      userName: 'aaaa',
-      favoriteGender: 'f',
-      visitDate: '2023.03.31',
-      postId: 10,
-    },
-    {
-      profileImage: TitleImg,
-      userName: 'aaaa',
-      favoriteGender: 'f',
-      visitDate: '2023.03.31',
-      postId: 11,
-    },
-  ]
-
   const fetchPostList = async (active) => {
     try {
-      let fetchedData
+      let fetchedData = await api.get(`/users/me`, {
+        headers: {
+          Authorization: sessionStorage.getItem('accesstoken'),
+        },
+      })
 
       if (active === '내가 작성한 제안서') {
-        fetchedData = mock1
+        setPostList(fetchedData.data.data.olles)
       } else {
-        fetchedData = mock2
+        setPostList(fetchedData.data.data.applies)
       }
-      if (fetchedData.length === 0) {
-        setContinueFetching(false)
-        return
-      }
-      setPostList((prev) => [...prev, ...fetchedData])
     } catch (err) {
       console.log(err)
     }
@@ -144,26 +33,14 @@ export const MyPage = () => {
 
   const handleTabClick = (title) => {
     setActive(title)
-    setPostList([])
-    setPostListPage(0)
-    setContinueFetching(true)
-    fetchPostList()
   }
 
   useEffect(() => {
     fetchPostList(active)
-  }, [postListPage])
-
-  useEffect(() => {
-    if (isIntersect && postList.length && postListPage >= 0) {
-      setPostListPage((prev) => {
-        return prev + COUNT
-      })
-    }
-  }, [isIntersect])
+  }, [active])
 
   return (
-    <Wrapper ref={rootRef}>
+    <Wrapper>
       <TabContainer>
         <TabBox>
           {tabTitles.map((title) => (
@@ -185,8 +62,10 @@ export const MyPage = () => {
               key={index}
               onClick={() => navigate(`/detail_page/${data.postId}`)}
             >
-              <ProfileImage src={data.profileImage} />
+              <ProfileImage src={TitleImg} />
               <ContentsWrapper>
+                <UserName>{data.userName}</UserName>
+
                 <UserName>{data.userName}</UserName>
                 <UserFavoriteGender>
                   <div>
@@ -198,12 +77,6 @@ export const MyPage = () => {
               </ContentsWrapper>
             </SuggestBox>
           ))}
-          <PostListBottom
-            continueFetching={continueFetching}
-            ref={intersectRef}
-          >
-            loading
-          </PostListBottom>
         </div>
       ) : (
         <div>
@@ -225,12 +98,6 @@ export const MyPage = () => {
               </ContentsWrapper>
             </SuggestBox>
           ))}
-          <PostListBottom
-            continueFetching={continueFetching}
-            ref={intersectRef}
-          >
-            loading
-          </PostListBottom>
         </div>
       )}
     </Wrapper>
