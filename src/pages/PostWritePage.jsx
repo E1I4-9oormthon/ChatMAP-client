@@ -4,8 +4,14 @@ import { theme } from '../styles/theme'
 import Calendar from 'react-calendar'
 import '../styles/calenderStyles.css'
 import moment from 'moment'
+import mapImageZero from '../assets/images/map_img.png'
 import mapImageOne from '../assets/images/map_img1.png'
 import api from '../apis/api'
+import mapImageTwo from '../assets/images/map_img2.png'
+import mapImageThree from '../assets/images/map_img3.png'
+import mapImageFour from '../assets/images/map_img4.png'
+import mapImageFive from '../assets/images/map_img5.png'
+
 
 export const PostWritePage = () => {
   const [value, onChange] = useState(new Date())
@@ -16,6 +22,18 @@ export const PostWritePage = () => {
   const handleGenderState = (value) => {
     setSelectGender(value)
   }
+
+  const mapList = {
+    0: mapImageZero,
+    1: mapImageOne,
+    2: mapImageTwo,
+    3: mapImageThree,
+    4: mapImageFour,
+    5: mapImageFive,
+  }
+
+  const [selectedMapNumber, setSelectedMapNumber] = useState(0)
+
   const handlePost = () => {
     const PostData = {
       title: titleRef.current.value,
@@ -53,6 +71,11 @@ export const PostWritePage = () => {
         window.alert('제안 등록 실패!')
       })
   }
+
+  const handleMapSelect = (e) => {
+    setSelectedMapNumber(parseInt(e.target.value) % 6)
+  }
+
   return (
     <>
       <Wrapper>
@@ -85,17 +108,19 @@ export const PostWritePage = () => {
             상관없어요
           </SelectGenderButton>
         </ButtonWrap>
-        <Title>언제 가시나요</Title>
+        <Title>언제 가시나요?</Title>
         <SelectDate>{moment(value).format('YYYY년 MM월 DD일')}</SelectDate>
         <CalenderWrap>
           <Calendar onChange={onChange} value={value} />
         </CalenderWrap>
-        <Title>어디로 가시나요</Title>
+        <Title>어디로 가시나요?</Title>
         <SelectPlaceDropBox
           defaultValue="default"
           id="category"
           name="category"
           ref={courseRef}
+          value={selectedMapNumber}
+          onChange={handleMapSelect}
         >
           <option value="1">시흥 - 광치기 올레 </option>
           <option value="2">우도 - 올레</option>
@@ -129,7 +154,7 @@ export const PostWritePage = () => {
           <option value="28"> 하도 - 종달 올레 </option>
         </SelectPlaceDropBox>
         <Title>올레 코스</Title>
-        <OllehMapImage src={mapImageOne} />
+        <OllehMapImage src={mapList[selectedMapNumber]} />
         <Title>연락처를 입력해주세요</Title>
         <PostTitleInputBox
           placeholder="카카오 오픈채팅방 링크를 입력하세요"
@@ -145,16 +170,17 @@ export const PostWritePage = () => {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
-  padding: 0px 1rem 120px 1rem;
-  overflow: scroll;
+  height: calc(100% - 1rem);
+  padding: 2rem 1rem;
+  overflow: auto;
+  box-sizing: border-box;
   word-break: break-all;
 `
 
 const Title = styled.div`
   font-weight: 700;
   font-size: 18px;
-  padding: 1rem 0 0.5rem;
+  padding: 0.5rem 0;
 `
 
 const PostTitleInputBox = styled.input`

@@ -10,10 +10,13 @@ const color = {
   red: '#ff0000',
 }
 
-const layout = {}
+const layout = {
+  headerHeight: '60px',
+}
 
 const device = {}
 
 export const theme = {
   color,
+  layout,
 }
