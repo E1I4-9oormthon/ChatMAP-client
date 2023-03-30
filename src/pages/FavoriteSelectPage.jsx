@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { Button } from '../components/common/Button'
 import { theme } from '../styles/theme'
 
 export const FavoriteSelectPage = () => {
@@ -12,7 +13,6 @@ export const FavoriteSelectPage = () => {
       setFavorite(buttonName)
     }
   }
-
   return (
     <Wrapper>
       <Box>
@@ -30,20 +30,35 @@ export const FavoriteSelectPage = () => {
           말동무와 도란도란
         </FavoriteButton>
       </Box>
+      <SubmitButtonWrapper>
+        <Button name="완료" isActivated={favorite.length > 0} />
+      </SubmitButtonWrapper>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   height: 100%;
-  padding: 0 1rem 0;
+  padding: 0 1rem 1rem;
+  box-sizing: border-box;
 `
-const Box = styled.div``
+
+const Box = styled.div`
+  width: 100%;
+`
 
 const FavoriteSelectTitle = styled.div`
   font-weight: 700;
   font-size: 18px;
   padding: 1rem 0 0.5rem;
+`
+
+const SubmitButtonWrapper = styled.div`
+  width: 90%;
 `
 
 const FavoriteButton = styled.div`
@@ -54,7 +69,7 @@ const FavoriteButton = styled.div`
     font-weight: 700;
     cursor: pointer;
   }
-
+  width: 100%;
   ${({ isSelected }) =>
     isSelected &&
     `    
