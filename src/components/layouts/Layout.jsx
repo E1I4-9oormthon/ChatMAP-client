@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
+import { theme } from '../../styles/theme'
 
 export const Layout = () => {
   return (
@@ -12,7 +13,7 @@ export const Layout = () => {
 }
 
 const Main = styled.div`
-  background: #008080;
+  background: ${theme.color.white};
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -20,7 +21,6 @@ const Main = styled.div`
 `
 
 const Section = styled.section`
-  background: #a0ffff;
   width: 100%;
   max-width: 500px;
 `
