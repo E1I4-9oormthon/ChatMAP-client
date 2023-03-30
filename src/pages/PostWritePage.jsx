@@ -82,12 +82,12 @@ export const PostWritePage = () => {
             상관없어요
           </SelectGenderButton>
         </ButtonWrap>
-        <Title>언제 가시나요</Title>
+        <Title>언제 가시나요?</Title>
         <SelectDate>{moment(value).format('YYYY년 MM월 DD일')}</SelectDate>
         <CalenderWrap>
           <Calendar onChange={onChange} value={value} />
         </CalenderWrap>
-        <Title>어디로 가시나요</Title>
+        <Title>어디로 가시나요?</Title>
         <SelectPlaceDropBox
           defaultValue="default"
           id="category"
@@ -142,16 +142,17 @@ export const PostWritePage = () => {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
-  padding: 0px 1rem 120px 1rem;
-  overflow: scroll;
+  height: calc(100% - 1rem);
+  padding: 2rem 1rem;
+  overflow: auto;
+  box-sizing: border-box;
   word-break: break-all;
 `
 
 const Title = styled.div`
   font-weight: 700;
   font-size: 18px;
-  padding: 1rem 0 0.5rem;
+  padding: 0.5rem 0;
 `
 
 const PostTitleInputBox = styled.input`
