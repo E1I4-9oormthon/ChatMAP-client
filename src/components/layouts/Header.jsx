@@ -13,7 +13,8 @@ export const Header = () => {
 }
 
 const Wrapper = styled.div`
-  width: 390px;
+  width: 100%;
+  max-width: 500px;
   height: 44px;
   /* background-color: aliceblue; */
   display: flex;

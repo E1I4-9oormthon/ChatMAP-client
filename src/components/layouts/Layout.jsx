@@ -6,8 +6,8 @@ import { Header } from './Header'
 export const Layout = () => {
   return (
     <Main>
+      <Header />
       <Section>
-        <Header />
         <Outlet />
       </Section>
     </Main>
@@ -17,12 +17,14 @@ export const Layout = () => {
 const Main = styled.div`
   background: ${theme.color.white};
   width: 100%;
-  min-height: 100vh;
+  height: calc(100vh);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `
 
 const Section = styled.section`
   width: 100%;
   max-width: 500px;
+  height: 100%;
 `
