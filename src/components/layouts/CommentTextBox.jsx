@@ -1,15 +1,13 @@
 import styled from 'styled-components'
 import MapImg from '../../assets/images/map_img.png'
 
-export const CommentTextBox = () => {
+export const CommentTextBox = ({ name, content }) => {
   return (
     <Wrapper>
       <ProfileImage src={MapImg} />
       <CommentBox>
-        <UserName>나</UserName>
-        <Content>
-          ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-        </Content>
+        <UserName>{name}</UserName>
+        <Content>{content}</Content>
       </CommentBox>
     </Wrapper>
   )
