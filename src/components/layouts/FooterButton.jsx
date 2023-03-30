@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 import { useNavigate } from 'react-router'
 
+
 export const FooterButton = ({ children, text, color }) => {
   const navigate = useNavigate()
   return (
