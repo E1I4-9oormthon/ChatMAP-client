@@ -1,14 +1,34 @@
+import { useState } from 'react'
 import styled from 'styled-components'
-import TitleImg from '../assets/images/title_img.png'
 import { theme } from '../styles/theme'
 
 export const FavoriteSelectPage = () => {
+  const [favorite, setFavorite] = useState('')
+
+  const handleFavoriteButtonClick = (buttonName) => {
+    if (favorite === buttonName) {
+      setFavorite('')
+    } else {
+      setFavorite(buttonName)
+    }
+  }
+
   return (
     <Wrapper>
       <Box>
         <FavoriteSelectTitle>어떤 동행을 선호하세요?</FavoriteSelectTitle>
-        <FavoriteButton>혼자서 안전하게</FavoriteButton>
-        <FavoriteButton>말동무와 도란도란</FavoriteButton>
+        <FavoriteButton
+          onClick={() => handleFavoriteButtonClick('alone')}
+          isSelected={favorite === 'alone'}
+        >
+          혼자서 안전하게
+        </FavoriteButton>
+        <FavoriteButton
+          onClick={() => handleFavoriteButtonClick('together')}
+          isSelected={favorite === 'together'}
+        >
+          말동무와 도란도란
+        </FavoriteButton>
       </Box>
     </Wrapper>
   )
@@ -34,6 +54,13 @@ const FavoriteButton = styled.div`
     font-weight: 700;
     cursor: pointer;
   }
+
+  ${({ isSelected }) =>
+    isSelected &&
+    `    
+    border: 2px solid ${theme.color.primary} !important;
+    font-weight: 700;
+`}
 
   border-radius: 8px;
   padding: 1rem;
