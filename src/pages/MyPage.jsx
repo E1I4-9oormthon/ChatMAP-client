@@ -8,6 +8,7 @@ import api from '../apis/api'
 export const MyPage = () => {
   const tabTitles = ['내가 작성한 제안서', '나의 동행']
   const [postList, setPostList] = useState([])
+  const [signedInUser, setSignedInUser] = useState()
   const [active, setActive] = useState(tabTitles[0])
   const navigate = useNavigate()
 
@@ -35,6 +36,19 @@ export const MyPage = () => {
     }
   }
 
+  const fetchSignedInData = async () => {
+    try {
+      let fetchedData = await api.get(`/users/me`, {
+        headers: {
+          Authorization: sessionStorage.getItem('accesstoken'),
+        },
+      })
+      setSignedInUser(fetchedData.data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const handleTabClick = (title) => {
     setActive(title)
   }
@@ -42,6 +56,10 @@ export const MyPage = () => {
   useEffect(() => {
     fetchPostList(active)
   }, [active])
+
+  useEffect(() => {
+    fetchSignedInData()
+  }, [])
 
   return (
     <Wrapper>
@@ -61,67 +79,92 @@ export const MyPage = () => {
 
       {active === '내가 작성한 제안서' ? (
         <div>
-          {postList && postList.map((data, index) => (
-            <SuggestBox
-              key={index}
-              onClick={() => navigate(`/detail_page/${data.id}`)}
-            >
-              <ProfileImage src={TitleImg} />
-              <ContentsWrapper>
-                <TopInfoWrapper>
-                  <div> {data.title}</div>
-                  {data.status === 0 ? (
-                    <WaitingTextWrapper>
-                      <WaitingText>대기중</WaitingText>
-                      {data.applies.length ? (
-                        <ApplyNumber>{data.applies.length}+</ApplyNumber>
-                      ) : (
-                        <div>{data.applies.length}</div>
-                      )}
-                    </WaitingTextWrapper>
-                  ) : (
-                    <MatchingText>매칭됨</MatchingText>
-                  )}
-                </TopInfoWrapper>
-                <UserFavoriteGender>
-                  {data.favoriteGender === 2 ? (
-                    <div>상관없어요</div>
-                  ) : data.favoriteGender === 1 ? (
-                    <div> 남성분과 동행할래요</div>
-                  ) : (
-                    <div> 여성분과 동행할래요</div>
-                  )}
+          {postList &&
+            postList.map((data, index) => (
+              <SuggestBox
+                key={index}
+                onClick={() => navigate(`/detail_page/${data.id}`)}
+              >
+                <ProfileImage src={TitleImg} />
+                <ContentsWrapper>
+                  <TopInfoWrapper>
+                    <div> {data.title}</div>
+                    {data.status === 0 ? (
+                      <WaitingTextWrapper>
+                        <WaitingText>대기중</WaitingText>
+                        {data.applies.length ? (
+                          <ApplyNumber>{data.applies.length}+</ApplyNumber>
+                        ) : (
+                          <div>{data.applies.length}</div>
+                        )}
+                      </WaitingTextWrapper>
+                    ) : (
+                      <MatchingText>매칭됨</MatchingText>
+                    )}
+                  </TopInfoWrapper>
+                  <UserFavoriteGender>
+                    {data.favoriteGender === 2 ? (
+                      <div>상관없어요</div>
+                    ) : data.favoriteGender === 1 ? (
+                      <div> 남성분과 동행할래요</div>
+                    ) : (
+                      <div> 여성분과 동행할래요</div>
+                    )}
 
-                  <div> {data.startDate.split('T')[0]}</div>
-                </UserFavoriteGender>
-              </ContentsWrapper>
-            </SuggestBox>
-          ))}
+                    <div> {data.startDate.split('T')[0]}</div>
+                  </UserFavoriteGender>
+                </ContentsWrapper>
+              </SuggestBox>
+            ))}
         </div>
       ) : (
         <div>
-          {postList && postList.map((data, index) => (
-            <SuggestBox
-              key={index}
-              onClick={() => navigate(`/detail_page/${data.postId}`)}
-            >
-              <ProfileImage src={TitleImg} />
-              <ContentsWrapper>
-                <div> {data.title}</div>
-                <UserFavoriteGender>
-                  {data.favoriteGender === 2 ? (
-                    <div>상관없어요</div>
-                  ) : data.favoriteGender === 1 ? (
-                    <div> 남성분과 동행할래요</div>
-                  ) : (
-                    <div> 여성분과 동행할래요</div>
-                  )}
+          {postList &&
+            postList.map((data, index) => (
+              <SuggestBox
+                key={index}
+                onClick={() => navigate(`/detail_page/${data.id}`)}
+              >
+                <ProfileImage src={TitleImg} />
+                <ContentsWrapper>
+                  <TopInfoWrapper>
+                    <div>
+                      <Title>{data.title}</Title>
+                      <UserName>{data.user?.name}</UserName>
+                    </div>
+                    {signedInUser &&
+                    data.applies.filter(
+                      (apply) => apply.userId === signedInUser.id
+                    )[0].status === 0 ? (
+                      <WaitingTextWrapper>
+                        <WaitingText>대기중</WaitingText>
+                      </WaitingTextWrapper>
+                    ) : signedInUser &&
+                      data.applies.filter(
+                        (apply) => apply.userId === signedInUser.id
+                      )[0].status === 1 ? (
+                      <MatchingText>승인됨</MatchingText>
+                    ) : (
+                      <WaitingTextWrapper>
+                        <WaitingText>리젝됨</WaitingText>
+                      </WaitingTextWrapper>
+                    )}
+                  </TopInfoWrapper>
 
-                  <div> {data.startDate.split('T')[0]}</div>
-                </UserFavoriteGender>
-              </ContentsWrapper>
-            </SuggestBox>
-          ))}
+                  <UserFavoriteGender>
+                    {data.favoriteGender === 2 ? (
+                      <div>상관없어요</div>
+                    ) : data.favoriteGender === 1 ? (
+                      <div> 남성분과 동행할래요</div>
+                    ) : (
+                      <div> 여성분과 동행할래요</div>
+                    )}
+
+                    <div> {data.startDate.split('T')[0]}</div>
+                  </UserFavoriteGender>
+                </ContentsWrapper>
+              </SuggestBox>
+            ))}
         </div>
       )}
     </Wrapper>
@@ -180,6 +223,19 @@ const SuggestBox = styled.div`
   cursor: pointer;
 `
 
+const Title = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+`
+
+const UserName = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: ${theme.color.grey};
+`
+
 const ProfileImage = styled.img`
   width: 3.5rem;
   height: 3.5rem;
@@ -196,7 +252,7 @@ const TopInfoWrapper = styled.div`
   font-weight: 700;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 `
 
 const WaitingTextWrapper = styled.div`
@@ -208,12 +264,15 @@ const WaitingTextWrapper = styled.div`
 
 const MatchingText = styled(WaitingText)`
   color: ${theme.color.primary};
+  font-weight: 700;
+  font-size: 15px;
 `
 
 const UserFavoriteGender = styled.div`
   display: flex;
   font-size: 15px;
   justify-content: space-between;
+  margin-top: 0.3rem;
 `
 
 const PostListBottom = styled.div`

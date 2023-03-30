@@ -91,10 +91,15 @@ export const MainPage = () => {
               <Title>{data.title}</Title>
               <UserName>{data.user.name}</UserName>
               <UserFavoriteGender>
-                <div>
-                  {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
-                </div>
-                <div>{data.startDate.split('T')[0]}</div>
+                {data.favoriteGender === 2 ? (
+                  <div>상관없어요</div>
+                ) : data.favoriteGender === 1 ? (
+                  <div> 남성분과 동행할래요</div>
+                ) : (
+                  <div> 여성분과 동행할래요</div>
+                )}
+
+                <div> {data.startDate.split('T')[0]}</div>
               </UserFavoriteGender>
             </ContentsWrapper>
           </SuggestBox>
