@@ -1,14 +1,21 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import TitleImg from '../assets/images/title_img.png'
 import { Button } from '../components/common/Button'
 
 export const WelcomePage = () => {
+  const navigate = useNavigate()
+
   return (
     <Wrapper>
       <Box>
         <TitleImage src={TitleImg} />
         <StartButtonWrapper>
-          <Button name="시작하기" />
+          <Button
+            name="시작하기"
+            handleClick={() => navigate('/favorite_select')}
+            isActivated={true}
+          />
           <InfoText>안전한 동행을 위해 성별을 정확하게 입력해주세요!</InfoText>
         </StartButtonWrapper>
       </Box>
