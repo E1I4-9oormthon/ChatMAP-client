@@ -1,22 +1,22 @@
 import styled from 'styled-components'
 import TitleImg from '../assets/images/title_img.png'
+import { Button } from '../components/common/Button'
 
 export const WelcomePage = () => {
   return (
     <Wrapper>
-      <A>
-        <B src={TitleImg} />
-        <div>
-          <C>시작하기</C>
-          <D>안전한 동행을 위해 성별을 정확하게 입력해주세요!</D>
-        </div>
-      </A>
+      <Box>
+        <TitleImage src={TitleImg} />
+        <StartButtonWrapper>
+          <Button name="시작하기" />
+          <InfoText>안전한 동행을 위해 성별을 정확하게 입력해주세요!</InfoText>
+        </StartButtonWrapper>
+      </Box>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  color: red;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,22 +24,25 @@ const Wrapper = styled.div`
   padding: 0 2rem;
 `
 
-const A = styled.div`
-  background: green;
+const Box = styled.div`
   height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 `
-const B = styled.img`
+
+const TitleImage = styled.img`
   width: 50%;
 `
 
-const C = styled.div`
-  background: blue;
+const StartButtonWrapper = styled.div`
+  width: 100%;
 `
 
-const D = styled.div`
+const InfoText = styled.div`
   color: grey;
+  text-align: center;
+  font-size: 13px;
+  margin-top: 1rem;
 `
