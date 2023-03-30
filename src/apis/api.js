@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const userAPI = axios.create({
-  baseURL: import.meta.env.REACT_APP_API_URL,
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 })
 
-userAPI.interceptors.request.use(
+api.interceptors.request.use(
   function (config) {
     console.log('request', config)
     return config
@@ -16,4 +16,4 @@ userAPI.interceptors.request.use(
   }
 )
 
-export default userAPI
+export default api
