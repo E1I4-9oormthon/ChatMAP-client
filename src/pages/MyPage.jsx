@@ -133,22 +133,25 @@ export const MyPage = () => {
                       <UserName>{data.user?.name}</UserName>
                     </div>
                     {signedInUser &&
-                    data.applies.filter(
-                      (apply) => apply.userId === signedInUser.id
-                    )[0].status === 0 ? (
-                      <WaitingTextWrapper>
-                        <WaitingText>대기중</WaitingText>
-                      </WaitingTextWrapper>
-                    ) : signedInUser &&
-                      data.applies.filter(
-                        (apply) => apply.userId === signedInUser.id
-                      )[0].status === 1 ? (
-                      <MatchingText>승인됨</MatchingText>
-                    ) : (
-                      <WaitingTextWrapper>
-                        <WaitingText>리젝됨</WaitingText>
-                      </WaitingTextWrapper>
-                    )}
+                      data.applies.map((apply) => {
+                        if (apply.userId === signedInUser.id) {
+                          if (apply.status === 0) {
+                            return (
+                              <WaitingTextWrapper>
+                                <WaitingText>대기중</WaitingText>
+                              </WaitingTextWrapper>
+                            )
+                          } else if (apply.status === 1) {
+                            return <MatchingText>승인됨</MatchingText>
+                          } else if (apply.status === 2) {
+                            return (
+                              <WaitingTextWrapper>
+                                <WaitingText>리젝됨</WaitingText>
+                              </WaitingTextWrapper>
+                            )
+                          }
+                        }
+                      })}
                   </TopInfoWrapper>
 
                   <UserFavoriteGender>
