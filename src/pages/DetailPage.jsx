@@ -154,6 +154,12 @@ export const DetailPage = () => {
     }
   }
 
+  const redirectKakaoChat = (data) => {
+    console.log(data)
+    window.open(data)
+    // https://www.naver.com
+  }
+
   return (
     <Wrapper>
       {data && (
@@ -218,7 +224,9 @@ export const DetailPage = () => {
                 <CommentPostButton>대기중</CommentPostButton>
               )
             ) : applyStatus === 1 ? (
-              <ChatButton>채팅하기</ChatButton>
+              <ChatButton onClick={() => redirectKakaoChat(data.openChatUrl)}>
+                채팅하기
+              </ChatButton>
             ) : (
               <ChatButton>싫다</ChatButton>
             )}
