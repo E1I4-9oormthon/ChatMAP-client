@@ -56,6 +56,19 @@ export const MainPage = () => {
     }
   }
 
+  const handleDetailPage = async (id) => {
+    console.log(id)
+    await api
+      .get(`/olles/${id}`)
+      .then((res) => {
+        console.log(res)
+        navigate(`/detail_page/${id}`)
+      })
+      .catch((err) => {
+        console.log('정보 불러오기 실패')
+      })
+  }
+
   useEffect(() => {
     fetchPostList()
   }, [postListPage])
@@ -72,10 +85,7 @@ export const MainPage = () => {
     <Wrapper ref={rootRef}>
       {postList &&
         postList.map((data, index) => (
-          <SuggestBox
-            key={index}
-            onClick={() => navigate(`/detail_page/${data.id}`)}
-          >
+          <SuggestBox key={index} onClick={() => handleDetailPage(data.id)}>
             <ProfileImage src={TitleImg} />
             <ContentsWrapper>
               <Title>{data.title}</Title>

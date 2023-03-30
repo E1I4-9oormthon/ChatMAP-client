@@ -4,6 +4,7 @@ import { theme } from '../styles/theme'
 import Calendar from 'react-calendar'
 import '../styles/calenderStyles.css'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 import mapImageZero from '../assets/images/map_img.png'
 import mapImageOne from '../assets/images/map_img1.png'
 import api from '../apis/api'
@@ -11,7 +12,7 @@ import mapImageTwo from '../assets/images/map_img2.png'
 import mapImageThree from '../assets/images/map_img3.png'
 import mapImageFour from '../assets/images/map_img4.png'
 import mapImageFive from '../assets/images/map_img5.png'
-
+import { useNavigate } from 'react-router'
 
 export const PostWritePage = () => {
   const [value, onChange] = useState(new Date())
@@ -19,6 +20,8 @@ export const PostWritePage = () => {
   const titleRef = useRef()
   const kakaoLinkRef = useRef()
   const courseRef = useRef(1)
+
+  const navigate = useNavigate()
   const handleGenderState = (value) => {
     setSelectGender(value)
   }
@@ -41,7 +44,6 @@ export const PostWritePage = () => {
       cours: courseRef.current.value,
       startDate: value,
       openChatUrl: kakaoLinkRef.current.value,
-      //   email: emailRef.current.value,
     }
 
     // if (
@@ -63,8 +65,12 @@ export const PostWritePage = () => {
       .post('/olles', PostData)
       .then((res) => {
         console.log(res)
-        window.alert('성공!')
-        //navigate('/detail_page/:id');
+        Swal.fire({
+          title: '동행이 등록되었어요',
+          confirmButtonColor: '#FAA250',
+        })
+        console.log(res.data.id)
+        // navigate(`/detail_page/${res.data.id}`)
       })
       .catch((err) => {
         console.log('제안 등록 실패', err)
