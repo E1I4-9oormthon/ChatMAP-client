@@ -108,7 +108,13 @@ export const DetailPage = () => {
             </InfoBox>
             <InfoBox>
               <InfoIcon src={GenderIcon} />
-              {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
+              {data.favoriteGender === 2 ? (
+                <div>상관없어요</div>
+              ) : data.favoriteGender === 1 ? (
+                <div> 남성분과 동행할래요</div>
+              ) : (
+                <div> 여성분과 동행할래요</div>
+              )}
             </InfoBox>
             <InfoBox>
               <InfoIcon src={LocationIcon} />
