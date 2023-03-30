@@ -57,47 +57,49 @@ export const MyPage = () => {
 
       {active === '내가 작성한 제안서' ? (
         <div>
-          {postList.map((data, index) => (
-            <SuggestBox
-              key={index}
-              onClick={() => navigate(`/detail_page/${data.postId}`)}
-            >
-              <ProfileImage src={TitleImg} />
-              <ContentsWrapper>
-                <UserName>{data.userName}</UserName>
+          {postList &&
+            postList.map((data, index) => (
+              <SuggestBox
+                key={index}
+                onClick={() => navigate(`/detail_page/${data.postId}`)}
+              >
+                <ProfileImage src={TitleImg} />
+                <ContentsWrapper>
+                  <UserName>{data.userName}</UserName>
 
-                <UserName>{data.userName}</UserName>
-                <UserFavoriteGender>
-                  <div>
-                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
-                    동행할래요
-                  </div>
-                  <div>{data.visitDate}</div>
-                </UserFavoriteGender>
-              </ContentsWrapper>
-            </SuggestBox>
-          ))}
+                  <UserName>{data.userName}</UserName>
+                  <UserFavoriteGender>
+                    <div>
+                      {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
+                      동행할래요
+                    </div>
+                    <div>{data.visitDate}</div>
+                  </UserFavoriteGender>
+                </ContentsWrapper>
+              </SuggestBox>
+            ))}
         </div>
       ) : (
         <div>
-          {postList.map((data, index) => (
-            <SuggestBox
-              key={index}
-              onClick={() => navigate(`/detail_page/${data.postId}`)}
-            >
-              <ProfileImage src={data.profileImage} />
-              <ContentsWrapper>
-                <UserName>{data.userName}</UserName>
-                <UserFavoriteGender>
-                  <div>
-                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
-                    동행할래요
-                  </div>
-                  <div>{data.visitDate}</div>
-                </UserFavoriteGender>
-              </ContentsWrapper>
-            </SuggestBox>
-          ))}
+          {postList &&
+            postList.map((data, index) => (
+              <SuggestBox
+                key={index}
+                onClick={() => navigate(`/detail_page/${data.postId}`)}
+              >
+                <ProfileImage src={data.profileImage} />
+                <ContentsWrapper>
+                  <UserName>{data.userName}</UserName>
+                  <UserFavoriteGender>
+                    <div>
+                      {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
+                      동행할래요
+                    </div>
+                    <div>{data.visitDate}</div>
+                  </UserFavoriteGender>
+                </ContentsWrapper>
+              </SuggestBox>
+            ))}
         </div>
       )}
     </Wrapper>
