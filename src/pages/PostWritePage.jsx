@@ -69,8 +69,8 @@ export const PostWritePage = () => {
           title: '동행이 등록되었어요',
           confirmButtonColor: '#FAA250',
         })
-        console.log(res.data.id)
-        // navigate(`/detail_page/${res.data.id}`)
+        console.log(res.data.data.id)
+        navigate(`/detail_page/${res.data.data.id}`)
       })
       .catch((err) => {
         console.log('제안 등록 실패', err)
@@ -271,7 +271,6 @@ const PostButton = styled.div`
   border: none;
   transition: all 0.2s ease;
   color: ${theme.color.white};
-  background: ${theme.color.primary};
   ${({ isActivated }) =>
     isActivated &&
     `    
@@ -282,6 +281,6 @@ const PostButton = styled.div`
   ${({ isActivated }) =>
     !isActivated &&
     `    
-    background: ${theme.color.grey} !important;
+    background-color: #faa250
 `}
 `

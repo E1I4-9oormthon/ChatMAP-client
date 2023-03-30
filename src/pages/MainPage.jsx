@@ -9,6 +9,7 @@ export const MainPage = () => {
   const intersectRef = useRef(null)
   const rootRef = useRef(null)
   const [isIntersect, setIsIntersect] = useState(false)
+  const [favorite, setFavorite] = useState()
 
   const [postList, setPostList] = useState([])
   const [postListPage, setPostListPage] = useState(1)
@@ -50,6 +51,14 @@ export const MainPage = () => {
         setContinueFetching(false)
       }
       setPostList((prev) => [...prev, ...fetchedData])
+
+      const signedInUser = await api.get(`/users/me`, {
+        headers: {
+          Authorization: sessionStorage.getItem('accesstoken'),
+        },
+      })
+
+      setFavorite(signedInUser.data.data.favorite)
     } catch (err) {
       console.log(err)
     }
@@ -82,6 +91,9 @@ export const MainPage = () => {
 
   return (
     <Wrapper ref={rootRef}>
+      <FavoriteSelectTitle>
+        {favorite === 0 ? '혼자서 안전하게' : '말동무와 도란도란'}
+      </FavoriteSelectTitle>
       {postList &&
         postList.map((data, index) => (
           <SuggestBox key={index} onClick={() => handleDetailPage(data.id)}>
@@ -109,6 +121,11 @@ export const MainPage = () => {
     </Wrapper>
   )
 }
+const FavoriteSelectTitle = styled.div`
+  font-weight: 700;
+  font-size: 18px;
+  padding: 0.5rem 0 0;
+`
 
 const Wrapper = styled.div`
   background: ${theme.color.lightGrey};
@@ -121,7 +138,7 @@ const Wrapper = styled.div`
 const SuggestBox = styled.div`
   margin: 1rem 0;
   background: ${theme.color.white};
-  border: 1px solid ${theme.color.grey};
+  border: 1px solid #e1e1e8;
   border-radius: 10px;
   padding: 1rem;
   display: flex;

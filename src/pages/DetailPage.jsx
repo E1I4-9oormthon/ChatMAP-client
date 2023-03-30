@@ -103,7 +103,10 @@ export const DetailPage = () => {
         .catch((err) => {
           const { response: errorResponse } = err
           if (errorResponse.status) {
-            return window.alert('중복신청은 불가해요')
+            return Swal.fire({
+              title: '중복신청은 불가해요',
+              confirmButtonColor: '#FAA250',
+            })
           }
           console.log('동행신청 실패', err)
         })

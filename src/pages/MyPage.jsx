@@ -218,7 +218,7 @@ const Wrapper = styled.div`
 const SuggestBox = styled.div`
   margin: 1rem 0;
   background: ${theme.color.white};
-  border: 1px solid ${theme.color.grey};
+  border: 1px solid #e1e1e8;
   border-radius: 10px;
   padding: 1rem;
   display: flex;
