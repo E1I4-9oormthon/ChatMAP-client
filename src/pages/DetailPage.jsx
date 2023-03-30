@@ -13,9 +13,13 @@ export const DetailPage = () => {
   const params = useParams()
   const [data, setData] = useState()
 
-  useEffect(async () => {
+  const fetchDetailData = async () => {
     const fetchedData = await api.get(`/olles/${params.id}`)
     setData(fetchedData.data.data)
+  }
+
+  useEffect(() => {
+    fetchDetailData()
   }, [])
 
   const courseData = {
