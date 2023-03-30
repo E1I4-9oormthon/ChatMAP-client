@@ -48,7 +48,6 @@ export const MainPage = () => {
       fetchedData = fetchedData.data.data.olles
       if (!hasNextPage) {
         setContinueFetching(false)
-        return
       }
       setPostList((prev) => [...prev, ...fetchedData])
     } catch (err) {
