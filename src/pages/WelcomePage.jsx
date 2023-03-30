@@ -9,9 +9,15 @@ export const WelcomePage = () => {
   const navigate = useNavigate()
 
   const handleStartClick = async () => {
-    const loginResult = await api.post(`/auth`, { withCredentials: true })
-    const userData = await api.get(`/users/me`, { withCredentials: true })
-    console.log(loginResult, userData)
+    const loginResult = await api.post(`/auth`)
+
+    let sessionStorageLogin = sessionStorage
+    sessionStorageLogin.setItem(
+      'accesstoken',
+      'Bearer ' + loginResult.data.data
+    )
+
+    const userData = await api.get(`${import.meta.env.VITE_BASE_URL}/users/me`)
   }
 
   return (

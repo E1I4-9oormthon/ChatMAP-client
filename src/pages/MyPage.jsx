@@ -241,17 +241,21 @@ const Tab = styled.button`
   width: 50%;
   border: 0;
   outline: 0;
+  font-size: 15px;
+  padding: 1rem;
   ${({ active }) =>
     active &&
     `
     font-weight: 700;
     border-bottom: 2px solid ${theme.color.primary};
-  `}
+  `};
 `
+
 const TabBox = styled.div`
   display: flex;
   width: 100%;
 `
+
 const TabContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -262,7 +266,7 @@ const Wrapper = styled.div`
   background: ${theme.color.lightGrey};
   height: calc(100% - 2rem);
   padding: 1rem;
-  overflow: scroll;
+  overflow: auto;
   word-break: break-all;
 `
 

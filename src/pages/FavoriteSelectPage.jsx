@@ -7,26 +7,20 @@ import { Header } from '../components/layouts/Header'
 import { theme } from '../styles/theme'
 
 export const FavoriteSelectPage = () => {
-  const [favorite, setFavorite] = useState('')
+  const [favorite, setFavorite] = useState(100)
   const navigate = useNavigate()
 
   const handleFavoriteButtonClick = (buttonName) => {
     if (favorite === buttonName) {
-      setFavorite('')
+      setFavorite(100)
     } else {
       setFavorite(buttonName)
     }
   }
 
   const handleSubmitButtonClick = async () => {
-    // await userAPI
-    //   .get(``)
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((err) => {
-    //     console.log('로그인 에러', err)
-    //   })
+    // await api.put(`/users`, favorite, { withCredentials: true })
+
     navigate('/main')
   }
 
@@ -38,14 +32,14 @@ export const FavoriteSelectPage = () => {
           <Box>
             <FavoriteSelectTitle>어떤 동행을 선호하세요?</FavoriteSelectTitle>
             <FavoriteButton
-              onClick={() => handleFavoriteButtonClick('alone')}
-              isSelected={favorite === 'alone'}
+              onClick={() => handleFavoriteButtonClick(0)}
+              isSelected={favorite === 0}
             >
               혼자서 안전하게
             </FavoriteButton>
             <FavoriteButton
-              onClick={() => handleFavoriteButtonClick('together')}
-              isSelected={favorite === 'together'}
+              onClick={() => handleFavoriteButtonClick(1)}
+              isSelected={favorite === 1}
             >
               말동무와 도란도란
             </FavoriteButton>
@@ -53,7 +47,7 @@ export const FavoriteSelectPage = () => {
           <SubmitButtonWrapper>
             <Button
               name="완료"
-              isActivated={favorite.length > 0}
+              isActivated={favorite < 90}
               handleClick={() => handleSubmitButtonClick()}
             />
           </SubmitButtonWrapper>
@@ -84,7 +78,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  padding: 0 1rem 1rem;
+  padding: 1rem 1rem 2.5rem;
   box-sizing: border-box;
 `
 
@@ -95,7 +89,7 @@ const Box = styled.div`
 const FavoriteSelectTitle = styled.div`
   font-weight: 700;
   font-size: 18px;
-  padding: 1rem 0 0.5rem;
+  padding: 0.5rem 0;
 `
 
 const SubmitButtonWrapper = styled.div`
@@ -119,5 +113,5 @@ const FavoriteButton = styled.div`
 
   border-radius: 8px;
   padding: 1rem;
-  margin: 0.5rem 0 0;
+  margin: 1rem 0 0;
 `

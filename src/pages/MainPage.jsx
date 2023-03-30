@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
-import TitleImg from '../assets/images/title_img.png'
 import api from '../apis/api'
 
 export const MainPage = () => {
@@ -99,7 +98,7 @@ const Wrapper = styled.div`
   background: ${theme.color.lightGrey};
   height: calc(100% - 2rem);
   padding: 1rem;
-  overflow: scroll;
+  overflow: auto;
   word-break: break-all;
 `
 
@@ -111,6 +110,7 @@ const SuggestBox = styled.div`
   padding: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 
 const ProfileImage = styled.img`
