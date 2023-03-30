@@ -38,50 +38,6 @@ export const MainPage = () => {
       setIsIntersect(false)
     }
   }
-  const mock = [
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 1,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 2,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 3,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 4,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 5,
-    },
-    {
-      profileImage: TitleImg,
-      userName: '광치기올레',
-      favoriteGender: 'm',
-      visitDate: '2023.03.31',
-      postId: 6,
-    },
-  ]
 
   const fetchPostList = async () => {
     try {
@@ -123,14 +79,15 @@ export const MainPage = () => {
               <div>
                 {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
               </div>
-              <div>{data.startDate}</div>
+              <div>{data.startDate.split('T')[0]}</div>
             </UserFavoriteGender>
           </ContentsWrapper>
         </SuggestBox>
       ))}
-      <PostListBottom continueFetching={continueFetching} ref={intersectRef}>
-        loading
-      </PostListBottom>
+      <PostListBottom
+        continueFetching={continueFetching}
+        ref={intersectRef}
+      ></PostListBottom>
     </Wrapper>
   )
 }
