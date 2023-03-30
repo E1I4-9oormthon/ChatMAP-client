@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
 import TitleImg from '../assets/images/title_img.png'
@@ -14,6 +15,7 @@ export const MyPage = () => {
   const [postListPage, setPostListPage] = useState(0)
   const [continueFetching, setContinueFetching] = useState(true)
   const [active, setActive] = useState(tabTitles[0])
+  const navigate = useNavigate()
 
   const COUNT = 10
 
@@ -44,36 +46,42 @@ export const MyPage = () => {
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 1,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 2,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 3,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 4,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 5,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 6,
     },
   ]
 
@@ -83,30 +91,35 @@ export const MyPage = () => {
       userName: 'aaaa',
       favoriteGender: 'f',
       visitDate: '2023.03.31',
+      postId: 7,
     },
     {
       profileImage: TitleImg,
       userName: 'aaaa',
       favoriteGender: 'f',
       visitDate: '2023.03.31',
+      postId: 8,
     },
     {
       profileImage: TitleImg,
       userName: 'aaaa',
       favoriteGender: 'f',
       visitDate: '2023.03.31',
+      postId: 9,
     },
     {
       profileImage: TitleImg,
       userName: 'aaaa',
       favoriteGender: 'f',
       visitDate: '2023.03.31',
+      postId: 10,
     },
     {
       profileImage: TitleImg,
       userName: 'aaaa',
       favoriteGender: 'f',
       visitDate: '2023.03.31',
+      postId: 11,
     },
   ]
 
@@ -168,7 +181,10 @@ export const MyPage = () => {
       {active === '내가 작성한 제안서' ? (
         <div>
           {postList.map((data, index) => (
-            <SuggestBox key={index}>
+            <SuggestBox
+              key={index}
+              onClick={() => navigate(`/detail_page/${data.postId}`)}
+            >
               <ProfileImage src={data.profileImage} />
               <ContentsWrapper>
                 <UserName>{data.userName}</UserName>
@@ -192,7 +208,10 @@ export const MyPage = () => {
       ) : (
         <div>
           {postList.map((data, index) => (
-            <SuggestBox key={index}>
+            <SuggestBox
+              key={index}
+              onClick={() => navigate(`/detail_page/${data.postId}`)}
+            >
               <ProfileImage src={data.profileImage} />
               <ContentsWrapper>
                 <UserName>{data.userName}</UserName>
