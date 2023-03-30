@@ -60,19 +60,28 @@ export const MyPage = () => {
           {postList.map((data, index) => (
             <SuggestBox
               key={index}
-              onClick={() => navigate(`/detail_page/${data.postId}`)}
+              onClick={() => navigate(`/detail_page/${data.id}`)}
             >
               <ProfileImage src={TitleImg} />
               <ContentsWrapper>
-                <UserName>{data.userName}</UserName>
-
-                <UserName>{data.userName}</UserName>
+                <TopInfoWrapper>
+                  <div> {data.title}</div>
+                  {data.status === 0 ? (
+                    <WaitingText>대기중</WaitingText>
+                  ) : (
+                    <MatchingText>매칭됨</MatchingText>
+                  )}
+                </TopInfoWrapper>
                 <UserFavoriteGender>
-                  <div>
-                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
-                    동행할래요
-                  </div>
-                  <div>{data.visitDate}</div>
+                  {data.favoriteGender === 2 ? (
+                    <div>상관없어요</div>
+                  ) : data.favoriteGender === 1 ? (
+                    <div> 남성분과 동행할래요</div>
+                  ) : (
+                    <div> 여성분과 동행할래요</div>
+                  )}
+
+                  <div> {data.startDate.split('T')[0]}</div>
                 </UserFavoriteGender>
               </ContentsWrapper>
             </SuggestBox>
@@ -152,15 +161,31 @@ const ProfileImage = styled.img`
   height: 3.5rem;
   border-radius: 50%;
 `
+
 const ContentsWrapper = styled.div`
   width: 100%;
   padding: 1rem 0.5rem;
 `
-const UserName = styled.div`
+
+const TopInfoWrapper = styled.div`
   font-size: 20px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
 `
+
+const WaitingText = styled.div`
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  color: ${theme.color.grey};
+`
+
+const MatchingText = styled(A)`
+  color: ${theme.color.primary};
+`
+
 const UserFavoriteGender = styled.div`
   display: flex;
   font-size: 15px;
