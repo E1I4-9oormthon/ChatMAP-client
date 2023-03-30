@@ -11,7 +11,7 @@ export const MainPage = () => {
   const [isIntersect, setIsIntersect] = useState(false)
 
   const [postList, setPostList] = useState([])
-  const [postListPage, setPostListPage] = useState(0)
+  const [postListPage, setPostListPage] = useState(1)
   const [continueFetching, setContinueFetching] = useState(true)
   const navigate = useNavigate()
 
@@ -41,7 +41,9 @@ export const MainPage = () => {
 
   const fetchPostList = async () => {
     try {
-      let fetchedData = await api.get(`/olles`)
+      let fetchedData = await api.get(
+        `/olles?page=${postListPage}&take=${COUNT}`
+      )
       fetchedData = fetchedData.data.data.olles
       if (fetchedData.length === 0) {
         setContinueFetching(false)
@@ -67,23 +69,24 @@ export const MainPage = () => {
 
   return (
     <Wrapper ref={rootRef}>
-      {postList.map((data, index) => (
-        <SuggestBox
-          key={index}
-          onClick={() => navigate(`/detail_page/${data.id}`)}
-        >
-          <ProfileImage src={data.user.profileImage} />
-          <ContentsWrapper>
-            <UserName>{data.user.name}</UserName>
-            <UserFavoriteGender>
-              <div>
-                {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
-              </div>
-              <div>{data.startDate.split('T')[0]}</div>
-            </UserFavoriteGender>
-          </ContentsWrapper>
-        </SuggestBox>
-      ))}
+      {postList &&
+        postList.map((data, index) => (
+          <SuggestBox
+            key={index}
+            onClick={() => navigate(`/detail_page/${data.id}`)}
+          >
+            <ProfileImage src={data.user.profileImage} />
+            <ContentsWrapper>
+              <UserName>{data.user.name}</UserName>
+              <UserFavoriteGender>
+                <div>
+                  {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
+                </div>
+                <div>{data.startDate.split('T')[0]}</div>
+              </UserFavoriteGender>
+            </ContentsWrapper>
+          </SuggestBox>
+        ))}
       <PostListBottom
         continueFetching={continueFetching}
         ref={intersectRef}
