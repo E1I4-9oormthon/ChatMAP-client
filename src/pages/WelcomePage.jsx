@@ -17,7 +17,13 @@ export const WelcomePage = () => {
       'Bearer ' + loginResult.data.data
     )
 
-    const userData = await api.get(`${import.meta.env.VITE_BASE_URL}/users/me`)
+    const userData = await api.get(`/users/me`)
+
+    if (userData.data.data.favorite >= 0) {
+      navigate('/main')
+    } else {
+      navigate('/favorite_select')
+    }
   }
 
   return (
