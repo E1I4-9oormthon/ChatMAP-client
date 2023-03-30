@@ -1,7 +1,7 @@
 const color = {
   primary: '',
   secondary: '',
-  tertiary: '',
+  tertiary: '#FAA250',
   white: '#fff',
   black: '#0b0b0b',
   grey: '#6e6e6e',
