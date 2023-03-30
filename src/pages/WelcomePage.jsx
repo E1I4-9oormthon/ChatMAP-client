@@ -4,26 +4,29 @@ import api from '../apis/api'
 import TitleImg from '../assets/images/title_img.png'
 import { Button } from '../components/common/Button'
 import { theme } from '../styles/theme'
+import axios from 'axios'
 
 export const WelcomePage = () => {
   const navigate = useNavigate()
 
-  const handleStartClick = async () => {
-    const loginResult = await api.post(`/auth`)
-
-    let sessionStorageLogin = sessionStorage
-    sessionStorageLogin.setItem(
-      'accesstoken',
-      'Bearer ' + loginResult.data.data
-    )
-
-    const userData = await api.get(`/users/me`)
-
-    if (userData.data.data.favorite >= 0) {
-      navigate('/main')
-    } else {
-      navigate('/favorite_select')
-    }
+  const handleStartClick = () => {
+    const loginResult = api.post(`/auth`).then((res) => {
+      let sessionStorageLogin = sessionStorage
+      sessionStorageLogin.setItem('accesstoken', 'Bearer ' + res.data.data)
+      api
+        .get(`/users/me`, {
+          headers: {
+            Authorization: 'Bearer ' + res.data.data,
+          },
+        })
+        .then((res) => {
+          if (!res.data.data.favorite) {
+            navigate('/favorite_select')
+          } else {
+            navigate('/main')
+          }
+        })
+    })
   }
 
   return (
