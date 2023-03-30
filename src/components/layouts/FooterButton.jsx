@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
 
-export const FooterButton = ({ children, text, color }) => {
+export const FooterButton = ({ children, text, color, handleClick }) => {
   return (
-    <ButtonWrap>
+    <ButtonWrap onClick={handleClick}>
       <HomeButton>
         <ButtonIcon>{children}</ButtonIcon>
         <ButtomText color={color}>{text}</ButtomText>

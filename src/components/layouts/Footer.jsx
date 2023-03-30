@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { AiOutlineHome, AiFillPlusCircle } from 'react-icons/ai'
 import { RxPerson } from 'react-icons/rx'
 import { FooterButton } from './FooterButton'
 
 export const Footer = () => {
+  const navigate = useNavigate()
+
   return (
     <Wrapper>
       <FooterButton text="홈" color="#999999">
@@ -13,7 +16,11 @@ export const Footer = () => {
         <AiFillPlusCircle size={25} color="#FAA250" />
       </FooterButton>
 
-      <FooterButton text="마이페이지" color="#999999">
+      <FooterButton
+        text="마이페이지"
+        color="#999999"
+        handleClick={() => navigate('/my_page')}
+      >
         <RxPerson size={20} color="#999999" />
       </FooterButton>
     </Wrapper>
