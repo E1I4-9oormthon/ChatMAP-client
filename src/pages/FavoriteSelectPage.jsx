@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import userAPI from '../apis/userAPI'
 import { Button } from '../components/common/Button'
+import { Header } from '../components/layouts/Header'
 import { theme } from '../styles/theme'
 
 export const FavoriteSelectPage = () => {
@@ -26,36 +27,56 @@ export const FavoriteSelectPage = () => {
     //   .catch((err) => {
     //     console.log('로그인 에러', err)
     //   })
-    navigate('/')
+    navigate('/main')
   }
 
   return (
-    <Wrapper>
-      <Box>
-        <FavoriteSelectTitle>어떤 동행을 선호하세요?</FavoriteSelectTitle>
-        <FavoriteButton
-          onClick={() => handleFavoriteButtonClick('alone')}
-          isSelected={favorite === 'alone'}
-        >
-          혼자서 안전하게
-        </FavoriteButton>
-        <FavoriteButton
-          onClick={() => handleFavoriteButtonClick('together')}
-          isSelected={favorite === 'together'}
-        >
-          말동무와 도란도란
-        </FavoriteButton>
-      </Box>
-      <SubmitButtonWrapper>
-        <Button
-          name="완료"
-          isActivated={favorite.length > 0}
-          handleClick={() => handleSubmitButtonClick()}
-        />
-      </SubmitButtonWrapper>
-    </Wrapper>
+    <Main>
+      <Header />
+      <Section>
+        <Wrapper>
+          <Box>
+            <FavoriteSelectTitle>어떤 동행을 선호하세요?</FavoriteSelectTitle>
+            <FavoriteButton
+              onClick={() => handleFavoriteButtonClick('alone')}
+              isSelected={favorite === 'alone'}
+            >
+              혼자서 안전하게
+            </FavoriteButton>
+            <FavoriteButton
+              onClick={() => handleFavoriteButtonClick('together')}
+              isSelected={favorite === 'together'}
+            >
+              말동무와 도란도란
+            </FavoriteButton>
+          </Box>
+          <SubmitButtonWrapper>
+            <Button
+              name="완료"
+              isActivated={favorite.length > 0}
+              handleClick={() => handleSubmitButtonClick()}
+            />
+          </SubmitButtonWrapper>
+        </Wrapper>
+      </Section>
+    </Main>
   )
 }
+
+const Main = styled.div`
+  background: ${theme.color.white};
+  width: 100%;
+  height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Section = styled.section`
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+`
 
 const Wrapper = styled.div`
   display: flex;
