@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
 import api from '../apis/api'
+import TitleImg from '../assets/images/title_img.png'
 
 export const MainPage = () => {
   const intersectRef = useRef(null)
@@ -43,8 +44,9 @@ export const MainPage = () => {
       let fetchedData = await api.get(
         `/olles?page=${postListPage}&take=${COUNT}`
       )
+      const hasNextPage = fetchedData.data.data.meta.hasNextPage
       fetchedData = fetchedData.data.data.olles
-      if (fetchedData.length === 0) {
+      if (!hasNextPage) {
         setContinueFetching(false)
         return
       }
@@ -61,7 +63,7 @@ export const MainPage = () => {
   useEffect(() => {
     if (isIntersect && postList.length && postListPage >= 0) {
       setPostListPage((prev) => {
-        return prev + COUNT
+        return prev + 1
       })
     }
   }, [isIntersect])
@@ -74,8 +76,9 @@ export const MainPage = () => {
             key={index}
             onClick={() => navigate(`/detail_page/${data.id}`)}
           >
-            <ProfileImage src={data.user.profileImage} />
+            <ProfileImage src={TitleImg} />
             <ContentsWrapper>
+              <Title>{data.title}</Title>
               <UserName>{data.user.name}</UserName>
               <UserFavoriteGender>
                 <div>
@@ -86,10 +89,9 @@ export const MainPage = () => {
             </ContentsWrapper>
           </SuggestBox>
         ))}
-      <PostListBottom
-        continueFetching={continueFetching}
-        ref={intersectRef}
-      ></PostListBottom>
+      <PostListBottom continueFetching={continueFetching} ref={intersectRef}>
+        loading
+      </PostListBottom>
     </Wrapper>
   )
 }
@@ -117,20 +119,31 @@ const ProfileImage = styled.img`
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
+  margin-right: 5px;
 `
 const ContentsWrapper = styled.div`
   width: 100%;
   padding: 1rem 0.5rem;
 `
-const UserName = styled.div`
+
+const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 0.5rem;
 `
+
+const UserName = styled.div`
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: ${theme.color.grey};
+`
+
 const UserFavoriteGender = styled.div`
   display: flex;
   font-size: 15px;
   justify-content: space-between;
+  color: ${theme.color.grey};
 `
 
 const PostListBottom = styled.div`
