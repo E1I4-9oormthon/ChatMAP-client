@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
 import { theme } from '../../styles/theme'
+import { Header } from './Header'
 
 export const Layout = () => {
   return (
     <Main>
       <Section>
+        <Header />
         <Outlet />
       </Section>
     </Main>
