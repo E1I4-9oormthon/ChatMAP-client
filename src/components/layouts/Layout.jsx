@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
 import { theme } from '../../styles/theme'
 import { Header } from './Header'
+import { Footer } from './Footer'
 
 export const Layout = () => {
   return (
@@ -10,6 +11,7 @@ export const Layout = () => {
       <Section>
         <Outlet />
       </Section>
+      <Footer />
     </Main>
   )
 }
