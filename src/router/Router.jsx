@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from '../components/layouts/Layout'
+import { DetailPage } from '../pages/DetailPage'
 import { FavoriteSelectPage } from '../pages/FavoriteSelectPage'
 import { MainPage } from '../pages/MainPage'
 import { MyPage } from '../pages/MyPage'
@@ -16,6 +17,7 @@ export const Router = () => {
           <Route path="/main" element={<MainPage />} />
           <Route path="/post_write" element={<PostWritePage />} />
           <Route path="/my_page" element={<MyPage />} />
+          <Route path="/detail_page/:id" element={<DetailPage />} />
         </Route>
         <Route path="/" element={<WelcomePage />} />
       </Routes>
