@@ -1,11 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import api from '../apis/api'
 import TitleImg from '../assets/images/title_img.png'
 import { Button } from '../components/common/Button'
 import { theme } from '../styles/theme'
 
 export const WelcomePage = () => {
   const navigate = useNavigate()
+
+  const handleStartClick = async () => {
+    const loginResult = await api.post(`/auth`, { withCredentials: true })
+    const userData = await api.get(`/users/me`, {}, { withCredentials: true })
+    console.log(loginResult, userData)
+  }
 
   return (
     <Main>
@@ -16,7 +23,7 @@ export const WelcomePage = () => {
             <StartButtonWrapper>
               <Button
                 name="시작하기"
-                handleClick={() => navigate('/favorite_select')}
+                handleClick={() => handleStartClick()}
                 isActivated={true}
               />
               <InfoText>
