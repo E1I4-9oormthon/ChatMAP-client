@@ -61,7 +61,7 @@ export const MyPage = () => {
 
       {active === '내가 작성한 제안서' ? (
         <div>
-          {postList.map((data, index) => (
+          {postList && postList.map((data, index) => (
             <SuggestBox
               key={index}
               onClick={() => navigate(`/detail_page/${data.id}`)}
@@ -100,7 +100,7 @@ export const MyPage = () => {
         </div>
       ) : (
         <div>
-          {postList.map((data, index) => (
+          {postList && postList.map((data, index) => (
             <SuggestBox
               key={index}
               onClick={() => navigate(`/detail_page/${data.postId}`)}

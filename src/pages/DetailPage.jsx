@@ -15,14 +15,36 @@ export const DetailPage = () => {
   const params = useParams()
   const [data, setData] = useState()
   const commentRef = useRef()
+  const [writer, setWriter] = useState()
+  const [signedInUser, setSignedInUser] = useState()
 
   const fetchDetailData = async () => {
     const fetchedData = await api.get(`/olles/${params.id}`)
+    console.log('글쓴이', fetchedData.data.data.user.name)
+    setWriter(fetchedData.data.data.user.name)
     setData(fetchedData.data.data)
+  }
+
+  const checkMe = async () => {
+    await api
+      .get(`/users/me`, {
+        headers: {
+          Authorization: sessionStorage.getItem('accesstoken'),
+        },
+      })
+
+      .then((res) => {
+        console.log('나는 누구냥', res.data.data.name)
+        setSignedInUser(res.data.data.name)
+      })
+      .catch((err) => {
+        console.log('실패', err)
+      })
   }
 
   useEffect(() => {
     fetchDetailData()
+    checkMe()
   }, [])
 
   const courseData = {
@@ -58,7 +80,7 @@ export const DetailPage = () => {
 
   const handleComment = async () => {
     const CommentData = {
-      olleId: params.id,
+      olleId: Number(params.id),
       content: commentRef.current.value,
     }
 
@@ -69,6 +91,10 @@ export const DetailPage = () => {
         .post('/olles/applies', CommentData)
         .then((res) => {
           console.log(res)
+          Swal.fire({
+            title: '동행이 신청되었어요',
+            confirmButtonColor: '#FAA250',
+          })
         })
         .catch((err) => {
           console.log('동행신청 실패', err)
@@ -126,24 +152,37 @@ export const DetailPage = () => {
       )}
       <CommentListWrapper>
         <CommentListTitle>같이 동행하고 싶어요</CommentListTitle>
-        <CommentBox>
-          <FlexWrap>
-            {/* <CommentInput
-            ref={commentRef}
-            placeholder="동행하고 싶은 내용을 입력해주세요."
-          />
-          <Button onClick={handleComment}>등록</Button> */}
-            <CommentTextBox />
-          </FlexWrap>
-          {/* <CommentPostButton>대기중</CommentPostButton> */}
-          <ButtonWrap>
-            <AcceptButton onClick={() => handleAccept(true)}>수락</AcceptButton>
-            <RejectButton onClick={() => handleAccept(false)}>
-              {' '}
-              거절
-            </RejectButton>
-          </ButtonWrap>
-        </CommentBox>
+        {writer === signedInUser ? (
+          ''
+        ) : (
+          <CommentBox>
+            <FlexWrap>
+              <CommentInput
+                ref={commentRef}
+                placeholder="동행하고 싶은 내용을 입력해주세요."
+              />
+              <Button onClick={handleComment}>등록</Button>
+            </FlexWrap>
+          </CommentBox>
+        )}
+
+        {data?.applies.map((apply) => (
+          <CommentBox>
+            <CommentTextBox name={apply.user.name} content={apply.content} />
+            {writer === signedInUser ? (
+              <ButtonWrap>
+                <AcceptButton onClick={() => handleAccept(true)}>
+                  수락
+                </AcceptButton>
+                <RejectButton onClick={() => handleAccept(false)}>
+                  거절
+                </RejectButton>
+              </ButtonWrap>
+            ) : (
+              <CommentPostButton>대기중</CommentPostButton>
+            )}
+          </CommentBox>
+        ))}
       </CommentListWrapper>
     </Wrapper>
   )
