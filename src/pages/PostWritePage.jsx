@@ -4,7 +4,13 @@ import { theme } from '../styles/theme'
 import Calendar from 'react-calendar'
 import '../styles/calenderStyles.css'
 import moment from 'moment'
+import mapImageZero from '../assets/images/map_img.png'
 import mapImageOne from '../assets/images/map_img1.png'
+import mapImageTwo from '../assets/images/map_img2.png'
+import mapImageThree from '../assets/images/map_img3.png'
+import mapImageFour from '../assets/images/map_img4.png'
+import mapImageFive from '../assets/images/map_img5.png'
+
 export const PostWritePage = () => {
   const [value, onChange] = useState(new Date())
   const [selectGender, setSelectGender] = useState()
@@ -14,6 +20,18 @@ export const PostWritePage = () => {
   const handleGenderState = (value) => {
     setSelectGender(value)
   }
+
+  const mapList = {
+    0: mapImageZero,
+    1: mapImageOne,
+    2: mapImageTwo,
+    3: mapImageThree,
+    4: mapImageFour,
+    5: mapImageFive,
+  }
+
+  const [selectedMapNumber, setSelectedMapNumber] = useState(0)
+
   const handlePost = () => {
     const PostData = {
       title: titleRef.current.value,
@@ -50,6 +68,11 @@ export const PostWritePage = () => {
         window.alert('제안 등록 실패!')
       })
   }
+
+  const handleMapSelect = (e) => {
+    setSelectedMapNumber(parseInt(e.target.value) % 6)
+  }
+
   return (
     <>
       <Wrapper>
@@ -93,6 +116,8 @@ export const PostWritePage = () => {
           id="category"
           name="category"
           ref={courseRef}
+          value={selectedMapNumber}
+          onChange={handleMapSelect}
         >
           <option value="1">시흥 - 광치기 올레 </option>
           <option value="2">우도 - 올레</option>
@@ -126,7 +151,7 @@ export const PostWritePage = () => {
           <option value="28"> 하도 - 종달 올레 </option>
         </SelectPlaceDropBox>
         <Title>올레 코스</Title>
-        <OllehMapImage src={mapImageOne} />
+        <OllehMapImage src={mapList[selectedMapNumber]} />
         <Title>연락처를 입력해주세요</Title>
         <PostTitleInputBox
           placeholder="카카오 오픈채팅방 링크를 입력하세요"
