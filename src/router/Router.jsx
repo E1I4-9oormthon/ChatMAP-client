@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from '../components/layouts/Layout'
+import { PostWritePage } from '../pages/PostWritePage'
 import { WelcomePage } from '../pages/WelcomePage'
 
 export const Router = () => {
@@ -7,8 +8,9 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<WelcomePage />} />
+          <Route path="/post_write" element={<PostWritePage />} />
         </Route>
+        <Route path="/" element={<WelcomePage />} />
       </Routes>
     </BrowserRouter>
   )
