@@ -4,14 +4,14 @@ import { reset } from 'styled-reset'
 const GlobalStyle = createGlobalStyle`
   ${reset}
   @font-face {
-     font-family: 'DungGeunMo';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
-     font-weight: normal;
-     font-style: normal;
-    }
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
 
   body {
-    font-family:'DungGeunMo',sans-serif;
+    font-family:'Pretendard-Regular',sans-serif;
   }
   
   a, a:hover, a:focus {
