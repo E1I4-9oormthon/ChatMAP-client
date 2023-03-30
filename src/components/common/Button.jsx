@@ -7,7 +7,7 @@ export const Button = memo(({ handleClick, name }) => {
 })
 
 const ButtonBox = styled.div`
-  background: ${theme.color.tertiary};
+  background: ${theme.color.primary};
   padding: 1rem;
   border-radius: 15px;
   display: flex;
