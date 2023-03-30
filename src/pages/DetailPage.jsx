@@ -8,10 +8,13 @@ import CalendarIcon from '../assets/icons/calendar_ico.png'
 import GenderIcon from '../assets/icons/gender_ico.png'
 import LocationIcon from '../assets/icons/location_ico.png'
 import api from '../apis/api'
+import { CommentTextBox } from '../components/layouts/CommentTextBox'
+import Swal from 'sweetalert2'
 
 export const DetailPage = () => {
   const params = useParams()
   const [data, setData] = useState()
+  const commentRef = useRef()
 
   const fetchDetailData = async () => {
     const fetchedData = await api.get(`/olles/${params.id}`)
@@ -53,6 +56,43 @@ export const DetailPage = () => {
     28: '하도 - 종달 올레',
   }
 
+  const handleComment = async () => {
+    const CommentData = {
+      olleId: params.id,
+      content: commentRef.current.value,
+    }
+
+    if (!CommentData.olleId || !CommentData.content) {
+      window.alert('글을 입력해주세요!')
+    } else {
+      await api
+        .post('/olles/applies', CommentData)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log('동행신청 실패', err)
+        })
+    }
+  }
+
+  const handleAccept = (result) => {
+    console.log(result)
+    if (result) {
+      Swal.fire({
+        title: '동행이 수락되었어요',
+        text: '동행자와 채팅으로 이야기를 나눠보세요',
+        confirmButtonColor: '#FAA250',
+        confirmButtonText: '채팅하기',
+      })
+    } else {
+      Swal.fire({
+        title: '동행이 거절되었어요',
+        confirmButtonColor: '#FAA250',
+      })
+    }
+  }
+
   return (
     <Wrapper>
       {data && (
@@ -80,6 +120,24 @@ export const DetailPage = () => {
       )}
       <CommentListWrapper>
         <CommentListTitle>같이 동행하고 싶어요</CommentListTitle>
+        <CommentBox>
+          <FlexWrap>
+            {/* <CommentInput
+            ref={commentRef}
+            placeholder="동행하고 싶은 내용을 입력해주세요."
+          />
+          <Button onClick={handleComment}>등록</Button> */}
+            <CommentTextBox />
+          </FlexWrap>
+          {/* <CommentPostButton>대기중</CommentPostButton> */}
+          <ButtonWrap>
+            <AcceptButton onClick={() => handleAccept(true)}>수락</AcceptButton>
+            <RejectButton onClick={() => handleAccept(false)}>
+              {' '}
+              거절
+            </RejectButton>
+          </ButtonWrap>
+        </CommentBox>
       </CommentListWrapper>
     </Wrapper>
   )
@@ -136,4 +194,90 @@ const CommentListWrapper = styled.div`
 const CommentListTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
+`
+
+const CommentBox = styled.div`
+  border: 0.846154px solid #e1e1e8;
+  margin-top: 1rem;
+  border-radius: 7px;
+  width: 100%;
+  min-height: 45px;
+  padding: 18px;
+  box-sizing: border-box;
+`
+
+const FlexWrap = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const CommentInput = styled.textarea`
+  width: 75%;
+  border: none;
+  color: #858899;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  &::placeholder {
+    color: #bcbcbc;
+  }
+`
+const Button = styled.div`
+  margin-left: 15px;
+  width: 22%;
+  height: 33px;
+  background-color: #faa250;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+`
+const CommentPostButton = styled.div`
+  width: 100%;
+  height: 40px;
+  color: white;
+  background-color: #d9d9d9;
+  border-radius: 6.76923px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+`
+const ButtonWrap = styled.div`
+  width: 100%;
+  height: 40px;
+  margin-top: 1rem;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  box-sizing: border-box;
+`
+
+const AcceptButton = styled.div`
+  width: 46%;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #faa250;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+`
+
+const RejectButton = styled.div`
+  width: 46%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  background-color: white;
+  color: #858899;
+  border-radius: 7px;
+  border: 1px solid #858899;
+  cursor: pointer;
 `

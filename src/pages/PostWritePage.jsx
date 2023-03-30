@@ -5,6 +5,8 @@ import Calendar from 'react-calendar'
 import '../styles/calenderStyles.css'
 import moment from 'moment'
 import mapImageOne from '../assets/images/map_img1.png'
+import api from '../apis/api'
+
 export const PostWritePage = () => {
   const [value, onChange] = useState(new Date())
   const [selectGender, setSelectGender] = useState()
@@ -20,26 +22,27 @@ export const PostWritePage = () => {
       favoriteGender: selectGender,
       cours: courseRef.current.value,
       startDate: value,
+      openChatUrl: kakaoLinkRef.current.value,
       //   email: emailRef.current.value,
     }
 
-    if (
-      !PostData.email ||
-      !PostData.favoriteGender ||
-      !PostData.cours ||
-      !PostData.startDate
-      // !PostData.password_check
-    ) {
-      window.alert('필수입력값을 입력해주세요!')
-    } else {
-      console.log(PostData)
-      completePost(PostData)
-    }
+    // if (
+    //   !PostData.email ||
+    //   !PostData.favoriteGender ||
+    //   !PostData.cours ||
+    //   !PostData.startDate
+    //   // !PostData.password_check
+    // ) {
+    //   window.alert('필수입력값을 입력해주세요!')
+    // } else {
+    console.log(PostData)
+    completePost(PostData)
+    // }
   }
 
   const completePost = async (PostData) => {
     await api
-      .post('v1/api/olles', PostData)
+      .post('/olles', PostData)
       .then((res) => {
         console.log(res)
         window.alert('성공!')
