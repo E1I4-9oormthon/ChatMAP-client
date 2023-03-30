@@ -4,6 +4,8 @@ import { theme } from '../styles/theme'
 import TitleImg from '../assets/images/title_img.png'
 
 export const MyPage = () => {
+  const tabTitles = ['내가 작성한 제안서', '나의 동행']
+
   const intersectRef = useRef(null)
   const rootRef = useRef(null)
   const [isIntersect, setIsIntersect] = useState(false)
@@ -11,6 +13,7 @@ export const MyPage = () => {
   const [postList, setPostList] = useState([])
   const [postListPage, setPostListPage] = useState(0)
   const [continueFetching, setContinueFetching] = useState(true)
+  const [active, setActive] = useState(tabTitles[0])
 
   const COUNT = 10
 
@@ -35,7 +38,7 @@ export const MyPage = () => {
       setIsIntersect(false)
     }
   }
-  const mock = [
+  const mock1 = [
     {
       profileImage: TitleImg,
       userName: '광치기올레',
@@ -74,9 +77,48 @@ export const MyPage = () => {
     },
   ]
 
-  const fetchPostList = async () => {
+  const mock2 = [
+    {
+      profileImage: TitleImg,
+      userName: 'aaaa',
+      favoriteGender: 'f',
+      visitDate: '2023.03.31',
+    },
+    {
+      profileImage: TitleImg,
+      userName: 'aaaa',
+      favoriteGender: 'f',
+      visitDate: '2023.03.31',
+    },
+    {
+      profileImage: TitleImg,
+      userName: 'aaaa',
+      favoriteGender: 'f',
+      visitDate: '2023.03.31',
+    },
+    {
+      profileImage: TitleImg,
+      userName: 'aaaa',
+      favoriteGender: 'f',
+      visitDate: '2023.03.31',
+    },
+    {
+      profileImage: TitleImg,
+      userName: 'aaaa',
+      favoriteGender: 'f',
+      visitDate: '2023.03.31',
+    },
+  ]
+
+  const fetchPostList = async (active) => {
     try {
-      const fetchedData = mock
+      let fetchedData
+
+      if (active === '내가 작성한 제안서') {
+        fetchedData = mock1
+      } else {
+        fetchedData = mock2
+      }
       if (fetchedData.length === 0) {
         setContinueFetching(false)
         return
@@ -87,8 +129,16 @@ export const MyPage = () => {
     }
   }
 
-  useEffect(() => {
+  const handleTabClick = (title) => {
+    setActive(title)
+    setPostList([])
+    setPostListPage(0)
+    setContinueFetching(true)
     fetchPostList()
+  }
+
+  useEffect(() => {
+    fetchPostList(active)
   }, [postListPage])
 
   useEffect(() => {
@@ -101,26 +151,93 @@ export const MyPage = () => {
 
   return (
     <Wrapper ref={rootRef}>
-      {postList.map((data, index) => (
-        <SuggestBox key={index}>
-          <ProfileImage src={data.profileImage} />
-          <ContentsWrapper>
-            <UserName>{data.userName}</UserName>
-            <UserFavoriteGender>
-              <div>
-                {data.favoriteGender === 'f' ? '여성분' : '남성분'}과 동행할래요
-              </div>
-              <div>{data.visitDate}</div>
-            </UserFavoriteGender>
-          </ContentsWrapper>
-        </SuggestBox>
-      ))}
-      <PostListBottom continueFetching={continueFetching} ref={intersectRef}>
-        loading
-      </PostListBottom>
+      <TabContainer>
+        <TabBox>
+          {tabTitles.map((title) => (
+            <Tab
+              key={title}
+              active={active === title}
+              onClick={() => handleTabClick(title)}
+            >
+              {title}
+            </Tab>
+          ))}
+        </TabBox>
+      </TabContainer>
+
+      {active === '내가 작성한 제안서' ? (
+        <div>
+          {postList.map((data, index) => (
+            <SuggestBox key={index}>
+              <ProfileImage src={data.profileImage} />
+              <ContentsWrapper>
+                <UserName>{data.userName}</UserName>
+                <UserFavoriteGender>
+                  <div>
+                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
+                    동행할래요
+                  </div>
+                  <div>{data.visitDate}</div>
+                </UserFavoriteGender>
+              </ContentsWrapper>
+            </SuggestBox>
+          ))}
+          <PostListBottom
+            continueFetching={continueFetching}
+            ref={intersectRef}
+          >
+            loading
+          </PostListBottom>
+        </div>
+      ) : (
+        <div>
+          {postList.map((data, index) => (
+            <SuggestBox key={index}>
+              <ProfileImage src={data.profileImage} />
+              <ContentsWrapper>
+                <UserName>{data.userName}</UserName>
+                <UserFavoriteGender>
+                  <div>
+                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
+                    동행할래요
+                  </div>
+                  <div>{data.visitDate}</div>
+                </UserFavoriteGender>
+              </ContentsWrapper>
+            </SuggestBox>
+          ))}
+          <PostListBottom
+            continueFetching={continueFetching}
+            ref={intersectRef}
+          >
+            loading
+          </PostListBottom>
+        </div>
+      )}
     </Wrapper>
   )
 }
+const Tab = styled.button`
+  cursor: pointer;
+  width: 50%;
+  border: 0;
+  outline: 0;
+  ${({ active }) =>
+    active &&
+    `
+    font-weight: 700;
+    border-bottom: 2px solid ${theme.color.primary};
+  `}
+`
+const TabBox = styled.div`
+  display: flex;
+  width: 100%;
+`
+const TabContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`
 
 const Wrapper = styled.div`
   background: ${theme.color.lightGrey};
