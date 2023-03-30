@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import userAPI from '../apis/userAPI'
+import api from '../apis/api'
 import { Button } from '../components/common/Button'
 import { Header } from '../components/layouts/Header'
 import { theme } from '../styles/theme'

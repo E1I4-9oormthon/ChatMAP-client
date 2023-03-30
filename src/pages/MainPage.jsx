@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
 import TitleImg from '../assets/images/title_img.png'
+import api from '../apis/api'
 
 export const MainPage = () => {
   const intersectRef = useRef(null)
@@ -84,7 +85,8 @@ export const MainPage = () => {
 
   const fetchPostList = async () => {
     try {
-      const fetchedData = mock
+      let fetchedData = await api.get(`/olles`)
+      fetchedData = fetchedData.data.data.olles
       if (fetchedData.length === 0) {
         setContinueFetching(false)
         return
@@ -112,16 +114,16 @@ export const MainPage = () => {
       {postList.map((data, index) => (
         <SuggestBox
           key={index}
-          onClick={() => navigate(`/detail_page/${data.postId}`)}
+          onClick={() => navigate(`/detail_page/${data.id}`)}
         >
-          <ProfileImage src={data.profileImage} />
+          <ProfileImage src={data.user.profileImage} />
           <ContentsWrapper>
-            <UserName>{data.userName}</UserName>
+            <UserName>{data.user.name}</UserName>
             <UserFavoriteGender>
               <div>
-                {data.favoriteGender === 'f' ? '여성분' : '남성분'}과 동행할래요
+                {data.favoriteGender === 2 ? '여성분' : '남성분'}과 동행할래요
               </div>
-              <div>{data.visitDate}</div>
+              <div>{data.startDate}</div>
             </UserFavoriteGender>
           </ContentsWrapper>
         </SuggestBox>
