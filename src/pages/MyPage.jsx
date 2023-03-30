@@ -15,17 +15,21 @@ export const MyPage = () => {
 
   const fetchPostList = async (active) => {
     try {
-      let fetchedData = await api.get(`/users/me`, {
-        headers: {
-          Authorization: sessionStorage.getItem('accesstoken'),
-        },
-      })
-
+      let fetchedData
       if (active === '내가 작성한 제안서') {
-        setPostList(fetchedData.data.data.olles)
+        fetchedData = await api.get(`/users/me/olles`, {
+          headers: {
+            Authorization: sessionStorage.getItem('accesstoken'),
+          },
+        })
       } else {
-        setPostList(fetchedData.data.data.applies)
+        fetchedData = await api.get(`/users/me/applies`, {
+          headers: {
+            Authorization: sessionStorage.getItem('accesstoken'),
+          },
+        })
       }
+      setPostList(fetchedData.data.data)
     } catch (err) {
       console.log(err)
     }
@@ -67,7 +71,14 @@ export const MyPage = () => {
                 <TopInfoWrapper>
                   <div> {data.title}</div>
                   {data.status === 0 ? (
-                    <WaitingText>대기중</WaitingText>
+                    <WaitingTextWrapper>
+                      <WaitingText>대기중</WaitingText>
+                      {data.applies.length ? (
+                        <ApplyNumber>{data.applies.length}+</ApplyNumber>
+                      ) : (
+                        <div>{data.applies.length}</div>
+                      )}
+                    </WaitingTextWrapper>
                   ) : (
                     <MatchingText>매칭됨</MatchingText>
                   )}
@@ -94,15 +105,19 @@ export const MyPage = () => {
               key={index}
               onClick={() => navigate(`/detail_page/${data.postId}`)}
             >
-              <ProfileImage src={data.profileImage} />
+              <ProfileImage src={TitleImg} />
               <ContentsWrapper>
-                <UserName>{data.userName}</UserName>
+                <div> {data.title}</div>
                 <UserFavoriteGender>
-                  <div>
-                    {data.favoriteGender === 'f' ? '여성분' : '남성분'}과
-                    동행할래요
-                  </div>
-                  <div>{data.visitDate}</div>
+                  {data.favoriteGender === 2 ? (
+                    <div>상관없어요</div>
+                  ) : data.favoriteGender === 1 ? (
+                    <div> 남성분과 동행할래요</div>
+                  ) : (
+                    <div> 여성분과 동행할래요</div>
+                  )}
+
+                  <div> {data.startDate.split('T')[0]}</div>
                 </UserFavoriteGender>
               </ContentsWrapper>
             </SuggestBox>
@@ -132,6 +147,14 @@ const TabBox = styled.div`
   width: 100%;
 `
 
+const WaitingText = styled.div`
+  margin-right: 3px;
+`
+
+const ApplyNumber = styled.div`
+  color: ${theme.color.primary};
+`
+
 const TabContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -154,6 +177,7 @@ const SuggestBox = styled.div`
   padding: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 
 const ProfileImage = styled.img`
@@ -175,14 +199,14 @@ const TopInfoWrapper = styled.div`
   margin-bottom: 0.5rem;
 `
 
-const WaitingText = styled.div`
+const WaitingTextWrapper = styled.div`
   font-size: 15px;
   display: flex;
   align-items: center;
   color: ${theme.color.grey};
 `
 
-const MatchingText = styled(A)`
+const MatchingText = styled(WaitingText)`
   color: ${theme.color.primary};
 `
 
