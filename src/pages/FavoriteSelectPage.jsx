@@ -19,7 +19,7 @@ export const FavoriteSelectPage = () => {
   }
 
   const handleSubmitButtonClick = async () => {
-    // await api.put(`/users`, favorite, { withCredentials: true })
+    await api.put(`/users`, favorite)
 
     navigate('/main')
   }
