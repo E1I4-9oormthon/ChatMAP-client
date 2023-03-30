@@ -6,10 +6,12 @@ import '../styles/calenderStyles.css'
 import moment from 'moment'
 import mapImageZero from '../assets/images/map_img.png'
 import mapImageOne from '../assets/images/map_img1.png'
+import api from '../apis/api'
 import mapImageTwo from '../assets/images/map_img2.png'
 import mapImageThree from '../assets/images/map_img3.png'
 import mapImageFour from '../assets/images/map_img4.png'
 import mapImageFive from '../assets/images/map_img5.png'
+
 
 export const PostWritePage = () => {
   const [value, onChange] = useState(new Date())
@@ -38,26 +40,27 @@ export const PostWritePage = () => {
       favoriteGender: selectGender,
       cours: courseRef.current.value,
       startDate: value,
+      openChatUrl: kakaoLinkRef.current.value,
       //   email: emailRef.current.value,
     }
 
-    if (
-      !PostData.email ||
-      !PostData.favoriteGender ||
-      !PostData.cours ||
-      !PostData.startDate
-      // !PostData.password_check
-    ) {
-      window.alert('필수입력값을 입력해주세요!')
-    } else {
-      console.log(PostData)
-      completePost(PostData)
-    }
+    // if (
+    //   !PostData.email ||
+    //   !PostData.favoriteGender ||
+    //   !PostData.cours ||
+    //   !PostData.startDate
+    //   // !PostData.password_check
+    // ) {
+    //   window.alert('필수입력값을 입력해주세요!')
+    // } else {
+    console.log(PostData)
+    completePost(PostData)
+    // }
   }
 
   const completePost = async (PostData) => {
     await api
-      .post('v1/api/olles', PostData)
+      .post('/olles', PostData)
       .then((res) => {
         console.log(res)
         window.alert('성공!')
