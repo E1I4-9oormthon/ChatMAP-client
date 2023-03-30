@@ -9,7 +9,11 @@ export const Footer = () => {
 
   return (
     <Wrapper>
-      <FooterButton text="홈" color="#999999">
+      <FooterButton
+        text="홈"
+        color="#999999"
+        handleClick={() => navigate('/main')}
+      >
         <AiOutlineHome size="20" color="#999999" />
       </FooterButton>
       <FooterButton text="제안하기" color="#FAA250">
