@@ -16,7 +16,11 @@ export const Footer = () => {
       >
         <AiOutlineHome size="20" color="#999999" />
       </FooterButton>
-      <FooterButton text="제안하기" color="#FAA250">
+      <FooterButton
+        text="제안하기"
+        color="#FAA250"
+        handleClick={() => navigate('/post_write')}
+      >
         <AiFillPlusCircle size={25} color="#FAA250" />
       </FooterButton>
 
