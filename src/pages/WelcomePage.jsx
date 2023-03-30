@@ -10,7 +10,7 @@ export const WelcomePage = () => {
 
   const handleStartClick = async () => {
     const loginResult = await api.post(`/auth`, { withCredentials: true })
-    const userData = await api.get(`/users/me`, {}, { withCredentials: true })
+    const userData = await api.get(`/users/me`, { withCredentials: true })
     console.log(loginResult, userData)
   }
 
