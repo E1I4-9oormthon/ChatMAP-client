@@ -19,7 +19,7 @@ export const Layout = () => {
 const Main = styled.div`
   background: ${theme.color.white};
   width: 100%;
-  height: calc(100vh);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,5 +28,5 @@ const Main = styled.div`
 const Section = styled.section`
   width: 100%;
   max-width: 500px;
-  height: 100%;
+  height: calc(100% - 145px);
 `
