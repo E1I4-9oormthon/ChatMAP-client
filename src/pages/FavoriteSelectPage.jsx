@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import userAPI from '../apis/userAPI'
 import { Button } from '../components/common/Button'
 import { theme } from '../styles/theme'
 
 export const FavoriteSelectPage = () => {
   const [favorite, setFavorite] = useState('')
+  const navigate = useNavigate()
 
   const handleFavoriteButtonClick = (buttonName) => {
     if (favorite === buttonName) {
@@ -13,6 +16,19 @@ export const FavoriteSelectPage = () => {
       setFavorite(buttonName)
     }
   }
+
+  const handleSubmitButtonClick = async () => {
+    // await userAPI
+    //   .get(``)
+    //   .then((res) => {
+    //     console.log(res)
+    //   })
+    //   .catch((err) => {
+    //     console.log('로그인 에러', err)
+    //   })
+    navigate('/')
+  }
+
   return (
     <Wrapper>
       <Box>
@@ -31,7 +47,11 @@ export const FavoriteSelectPage = () => {
         </FavoriteButton>
       </Box>
       <SubmitButtonWrapper>
-        <Button name="완료" isActivated={favorite.length > 0} />
+        <Button
+          name="완료"
+          isActivated={favorite.length > 0}
+          handleClick={() => handleSubmitButtonClick()}
+        />
       </SubmitButtonWrapper>
     </Wrapper>
   )
@@ -69,7 +89,6 @@ const FavoriteButton = styled.div`
     font-weight: 700;
     cursor: pointer;
   }
-  width: 100%;
   ${({ isSelected }) =>
     isSelected &&
     `    
