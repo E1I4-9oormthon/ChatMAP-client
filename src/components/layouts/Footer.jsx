@@ -28,6 +28,7 @@ export const Footer = () => {
 }
 
 const Wrapper = styled.div`
+  background-color: white;
   padding-top: 14px;
   padding-right: 30px;
   padding-left: 30px;
