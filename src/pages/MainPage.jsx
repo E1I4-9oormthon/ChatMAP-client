@@ -1,8 +1,40 @@
+import { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
 import TitleImg from '../assets/images/title_img.png'
 
 export const MainPage = () => {
+  const intersectRef = useRef(null)
+  const rootRef = useRef(null)
+  const [isIntersect, setIsIntersect] = useState(false)
+
+  const [postList, setPostList] = useState([])
+  const [postListPage, setPostListPage] = useState(0)
+  const [continueFetching, setContinueFetching] = useState(true)
+
+  const COUNT = 10
+
+  useEffect(() => {
+    if (!rootRef.current) return
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: rootRef.current,
+      rootMargin: '0px',
+      threshold: 0.01,
+    })
+
+    if (intersectRef.current) observer.observe(intersectRef.current)
+
+    return () => observer.disconnect()
+  }, [intersectRef, rootRef.current])
+
+  const handleIntersect = (entries) => {
+    const target = entries[0]
+    if (target.isIntersecting) {
+      setIsIntersect(true)
+    } else {
+      setIsIntersect(false)
+    }
+  }
   const mock = [
     {
       profileImage: TitleImg,
@@ -42,10 +74,35 @@ export const MainPage = () => {
     },
   ]
 
+  const fetchPostList = async () => {
+    try {
+      const fetchedData = mock
+      if (fetchedData.length === 0) {
+        setContinueFetching(false)
+        return
+      }
+      setPostList((prev) => [...prev, ...fetchedData])
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchPostList()
+  }, [postListPage])
+
+  useEffect(() => {
+    if (isIntersect && postList.length && postListPage >= 0) {
+      setPostListPage((prev) => {
+        return prev + COUNT
+      })
+    }
+  }, [isIntersect])
+
   return (
-    <Wrapper>
-      {mock.map((data) => (
-        <SuggestBox>
+    <Wrapper ref={rootRef}>
+      {postList.map((data, index) => (
+        <SuggestBox key={index}>
           <ProfileImage src={data.profileImage} />
           <ContentsWrapper>
             <UserName>{data.userName}</UserName>
@@ -58,6 +115,9 @@ export const MainPage = () => {
           </ContentsWrapper>
         </SuggestBox>
       ))}
+      <PostListBottom continueFetching={continueFetching} ref={intersectRef}>
+        loading
+      </PostListBottom>
     </Wrapper>
   )
 }
@@ -98,4 +158,12 @@ const UserFavoriteGender = styled.div`
   display: flex;
   font-size: 15px;
   justify-content: space-between;
+`
+
+const PostListBottom = styled.div`
+  ${({ continueFetching }) =>
+    !continueFetching &&
+    `
+    display: none !important;
+  `}
 `
