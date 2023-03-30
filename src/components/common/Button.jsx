@@ -4,7 +4,10 @@ import { theme } from '../../styles/theme'
 
 export const Button = memo(({ handleClick, name, isActivated }) => {
   return (
-    <ButtonBox onClick={handleClick} isActivated={isActivated}>
+    <ButtonBox
+      onClick={isActivated ? handleClick : null}
+      isActivated={isActivated}
+    >
       {name}
     </ButtonBox>
   )
