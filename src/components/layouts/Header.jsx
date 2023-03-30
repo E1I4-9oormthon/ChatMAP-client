@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { BiArrowBack } from 'react-icons/bi'
+import { theme } from '../../styles/theme'
 
 export const Header = () => {
   return (
@@ -7,7 +8,7 @@ export const Header = () => {
       {/* <BackArrow>
         <BiArrowBack size={16} />
       </BackArrow> */}
-      <Title>너가올레내가갈레</Title>
+      <Title>너가올레? 내가갈레!</Title>
     </Wrapper>
   )
 }
@@ -15,11 +16,11 @@ export const Header = () => {
 const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 44px;
-  /* background-color: aliceblue; */
+  height: ${theme.layout.headerHeight};
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid ${theme.color.lightGrey};
 `
 const BackArrow = styled.div`
   width: 24px;
@@ -33,8 +34,6 @@ const BackArrow = styled.div`
 const Title = styled.div`
   display: flex;
   align-items: center;
-  width: 111px;
-  height: 33px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 700;
 `
