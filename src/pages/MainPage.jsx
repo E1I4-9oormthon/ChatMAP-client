@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { theme } from '../styles/theme'
@@ -11,6 +12,7 @@ export const MainPage = () => {
   const [postList, setPostList] = useState([])
   const [postListPage, setPostListPage] = useState(0)
   const [continueFetching, setContinueFetching] = useState(true)
+  const navigate = useNavigate()
 
   const COUNT = 10
 
@@ -41,36 +43,42 @@ export const MainPage = () => {
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 1,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 2,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 3,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 4,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 5,
     },
     {
       profileImage: TitleImg,
       userName: '광치기올레',
       favoriteGender: 'm',
       visitDate: '2023.03.31',
+      postId: 6,
     },
   ]
 
@@ -102,7 +110,10 @@ export const MainPage = () => {
   return (
     <Wrapper ref={rootRef}>
       {postList.map((data, index) => (
-        <SuggestBox key={index}>
+        <SuggestBox
+          key={index}
+          onClick={() => navigate(`/detail_page/${data.postId}`)}
+        >
           <ProfileImage src={data.profileImage} />
           <ContentsWrapper>
             <UserName>{data.userName}</UserName>
