@@ -1,8 +1,10 @@
 import styled, { css } from 'styled-components'
+import { useNavigate } from 'react-router'
 
 export const FooterButton = ({ children, text, color }) => {
+  const navigate = useNavigate()
   return (
-    <ButtonWrap>
+    <ButtonWrap onClick={() => navigate('/')}>
       <HomeButton>
         <ButtonIcon>{children}</ButtonIcon>
         <ButtomText color={color}>{text}</ButtomText>
