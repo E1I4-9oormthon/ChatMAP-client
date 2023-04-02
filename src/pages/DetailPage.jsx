@@ -24,8 +24,8 @@ export const DetailPage = () => {
     console.log('글쓴이', fetchedData.data.data.user.name)
     setWriter(fetchedData.data.data.user.name)
     setData(fetchedData.data.data)
-    console.log('정보', fetchedData)
-    // setApplyStatus()
+    // console.log('정보', fetchedData.data.data.applies[0].status)
+    // setApplyStatus(fetchedData.data.data.applies.status)
   }
 
   const checkMe = async () => {
@@ -91,13 +91,18 @@ export const DetailPage = () => {
       window.alert('글을 입력해주세요!')
     } else {
       await api
-        .post('/olles/applies', CommentData)
+        .post('/olles/applies', CommentData, {
+          headers: {
+            Authorization: sessionStorage.getItem('accesstoken'),
+          },
+        })
         .then((res) => {
           console.log(res)
           Swal.fire({
             title: '동행이 신청되었어요',
             confirmButtonColor: '#FAA250',
           })
+          fetchDetailData()
         })
 
         .catch((err) => {
@@ -122,18 +127,23 @@ export const DetailPage = () => {
 
     console.log(ApplyData)
 
-    await api
-      .put('/olles/applies', ApplyData)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log('실패!', err)
-      })
+    await api.put('/olles/applies', ApplyData, {
+      headers: {
+        Authorization: sessionStorage.getItem('accesstoken'),
+      },
+    })
+    fetchDetailData()
+    // .then((res) => {
+    //   console.log(res)
+    // })
+    // .catch((err) => {
+    //   console.log('실패!', err)
+    // })
   }
 
   const handleAccept = (result, data) => {
     console.log(result)
+    console.log('댓글정보', data)
     if (result) {
       Swal.fire({
         title: '동행이 수락되었어요',
@@ -141,8 +151,7 @@ export const DetailPage = () => {
         confirmButtonColor: '#FAA250',
         confirmButtonText: '채팅하기',
       })
-      handleApply(data, 1)
-      setApplyStatus(1)
+
       handleApply(data, 1)
       setApplyStatus(1)
     } else {
@@ -150,8 +159,6 @@ export const DetailPage = () => {
         title: '동행이 거절되었어요',
         confirmButtonColor: '#FAA250',
       })
-      handleApply(data, 2)
-      setApplyStatus(2)
       handleApply(data, 2)
       setApplyStatus(2)
     }
@@ -213,7 +220,7 @@ export const DetailPage = () => {
         {data?.applies.map((apply) => (
           <CommentBox>
             <CommentTextBox name={apply.user.name} content={apply.content} />
-            {applyStatus === 0 ? (
+            {apply.status === 0 ? (
               writer === signedInUser ? (
                 <ButtonWrap>
                   <AcceptButton onClick={() => handleAccept(true, apply)}>
@@ -226,12 +233,12 @@ export const DetailPage = () => {
               ) : (
                 <CommentPostButton>대기중</CommentPostButton>
               )
-            ) : applyStatus === 1 ? (
+            ) : apply.status === 1 ? (
               <ChatButton onClick={() => redirectKakaoChat(data.openChatUrl)}>
                 채팅하기
               </ChatButton>
             ) : (
-              <ChatButton>싫다</ChatButton>
+              <ChatButton>거절완료</ChatButton>
             )}
           </CommentBox>
         ))}

@@ -62,7 +62,11 @@ export const PostWritePage = () => {
 
   const completePost = async (PostData) => {
     await api
-      .post('/olles', PostData)
+      .post('/olles', PostData, {
+        headers: {
+          Authorization: sessionStorage.getItem('accesstoken'),
+        },
+      })
       .then((res) => {
         console.log(res)
         Swal.fire({
